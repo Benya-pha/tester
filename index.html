@@ -133,9 +133,6 @@
                 <section class="rounded-[2rem] bg-earth-accent text-white p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-accent/15">
                     <div class="absolute -right-12 -top-16 w-64 h-64 rounded-full border border-white/10"></div>
                     <div class="absolute -right-2 -top-6 w-44 h-44 rounded-full border border-white/10"></div>
-                    <div class="absolute right-8 bottom-8 opacity-[0.08]">
-                        <i data-lucide="music-2" class="w-44 h-44"></i>
-                    </div>
                     <div class="relative z-10">
                         <div class="flex items-center justify-between gap-3">
                             <span class="text-[11px] tracking-[0.2em] uppercase text-white/70 font-medium">Karaoke spending</span>
@@ -144,7 +141,7 @@
                                 <button id="month-summary-tab" onclick="setSummaryMode('month')" class="rounded-full px-3 py-1.5 text-white/80">Month</button>
                             </div>
                         </div>
-                        <p id="summary-caption" class="text-sm text-white/75 mt-5 mb-1">ยอดเปย์คาราโอเกะปีนี้ (ส่วนของคุณ)</p>
+                        <p id="summary-caption" class="text-sm text-white/75 mt-5 mb-1">คาราโอเกะปี 2026 (ส่วนของคุณ)</p>
                         <div class="flex items-baseline gap-2">
                             <span class="text-2xl font-medium text-white/80">฿</span>
                             <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
@@ -802,7 +799,7 @@
             let total = 0;
             if (summaryMode === "year") {
                 label.textContent = "ปี " + summaryYear;
-                caption.textContent = "ยอดเปย์คาราโอเกะปี " + summaryYear + " (ส่วนของคุณ)";
+                caption.textContent = "คาราโอเกะปี " + summaryYear + " (ส่วนของคุณ)";
                 total = sessions.filter(s => s.date && s.date.startsWith(String(summaryYear)))
                     .reduce((sum, s) => sum + (Number(s.myShare) || 0), 0);
             } else {
