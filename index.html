@@ -965,6 +965,24 @@
                     event.dataTransfer.effectAllowed = "move";
                 });
                 row.addEventListener("dragend", () => row.classList.remove("dragging"));
+                row.addEventListener("pointerdown", () => { draggedPlaylistId = playlist.id; });
+                row.addEventListener("pointerup", event => {
+                    if (!draggedPlaylistId || draggedPlaylistId === playlist.id) return;
+                    const target = document.elementFromPoint(event.clientX,event.clientY);
+                    const targetRow = target && target.closest("[data-playlist-id]");
+                    if (!targetRow) return;
+                    const targetId = targetRow.dataset.playlistId;
+                    const order = getOrderedPlaylists().map(p => p.id);
+                    const from = order.indexOf(draggedPlaylistId);
+                    const to = order.indexOf(targetId);
+                    if (from >= 0 && to >= 0) {
+                        order.splice(from,1);
+                        order.splice(to,0,draggedPlaylistId);
+                        songData.playlistOrder = order;
+                        saveSongData();
+                        renderPlaylistNavigation();
+                    }
+                });
                 row.addEventListener("dragover", event => event.preventDefault());
                 row.addEventListener("drop", event => {
                     event.preventDefault();
@@ -1041,6 +1059,29 @@
         }
         function escapeSongAttribute(value) { return escapeSongText(value); }
         function normalizeSongText(value) { return String(value || "").toLocaleLowerCase().replace(/\s+/g," ").trim(); }
+        function canonicalSongUrl(value) {
+            if (!value) return "";
+            try {
+                const parsed = new URL(value);
+                const host = parsed.hostname.toLowerCase().replace(/^www\./,"");
+                if (host === "youtu.be" || host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")) {
+                    const videoId = parsed.searchParams.get("v") ||
+                        (parsed.pathname.match(/\/(?:shorts|embed|live)\/([^/?]+)/) || [])[1] ||
+                        parsed.pathname.split("/").filter(Boolean).pop();
+                    return videoId ? "youtube:" + videoId : host + parsed.pathname;
+                }
+                if (host === "open.spotify.com") {
+                    const match = parsed.pathname.match(/\/(track|episode|album|playlist)\/([^/?]+)/);
+                    return match ? "spotify:" + match[1] + ":" + match[2] : "spotify:" + parsed.pathname;
+                }
+                parsed.hash = "";
+                ["si","utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(key => parsed.searchParams.delete(key));
+                parsed.searchParams.sort();
+                return host + parsed.pathname.replace(/\/$/,"") + (parsed.search ? parsed.search : "");
+            } catch (error) {
+                return normalizeSongText(value);
+            }
+        }
 
         function openSongForm() {
             document.getElementById("song-title").value = "";
@@ -1082,20 +1123,24 @@
             const url = document.getElementById("song-url").value.trim();
             if (!title || !artist) { alert("กรุณากรอกชื่อเพลงและศิลปิน"); return; }
             const duplicate = songData.songs.find(song =>
-                (url && song.url && normalizeSongText(url) === normalizeSongText(song.url)) ||
+                (url && song.url && canonicalSongUrl(url) === canonicalSongUrl(song.url)) ||
                 (normalizeSongText(song.title) === normalizeSongText(title) && normalizeSongText(song.artist) === normalizeSongText(artist))
             );
             if (duplicate) {
                 const addToPlaylist = confirm("เพลงนี้มีอยู่ใน All Songs แล้ว ต้องการใช้เพลงเดิมแทนการสร้างรายการซ้ำหรือไม่?");
-                if (addToPlaylist && activePlaylistId) {
-                    const playlist = songData.playlists.find(p => p.id === activePlaylistId);
-                    if (playlist && !playlist.songIds.includes(duplicate.id)) {
-                        playlist.songIds.push(duplicate.id);
-                        saveSongData();
-                        renderSongLibrary();
+                if (addToPlaylist) {
+                    if (activePlaylistId) {
+                        const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+                        if (playlist && !playlist.songIds.includes(duplicate.id)) playlist.songIds.push(duplicate.id);
+                    } else if (songData.playlists.length) {
+                        const choices = getOrderedPlaylists();
+                        const choiceText = choices.map((p,i) => (i + 1) + ". " + p.name).join("\n");
+                        const picked = prompt("เลือก Playlist ที่ต้องการเพิ่มเพลงเดิม:\n" + choiceText + "\nกรอกหมายเลข หรือกดยกเลิก");
+                        const selected = choices[Number(picked) - 1];
+                        if (selected && !selected.songIds.includes(duplicate.id)) selected.songIds.push(duplicate.id);
                     }
-                } else if (addToPlaylist) {
-                    alert("เพลงเดิมอยู่ใน All Songs แล้ว หากต้องการเพิ่มเข้า Playlist ให้เปิด Playlist แล้วเลือกเพลงจากคลัง");
+                    saveSongData();
+                    renderSongLibrary();
                 }
                 closeSongForm();
                 return;
@@ -1213,7 +1258,10 @@
             renderDashboard();
             renderHistory();
             renderPlaylistNavigation();
-            setHistorySort("day");
+            document.getElementById("history-sort-day").classList.add("active");
+            document.getElementById("history-sort-day").textContent = "วัน ↓";
+            document.getElementById("history-sort-month").classList.remove("active");
+            document.getElementById("history-sort-price").classList.remove("active");
         }
 
         // Run on load
