@@ -1047,7 +1047,7 @@
         }
 
         function sortArtists(language) {
-            artistSortDirections[language] = !artistSortDirections[language];
+            if (artistSortMode === language) artistSortDirections[language] = !artistSortDirections[language];
             artistSortMode = language;
             document.getElementById("sort-artist-en").textContent = artistSortDirections.en ? "A → Z" : "Z → A";
             document.getElementById("sort-artist-th").textContent = artistSortDirections.th ? "ก → ฮ" : "ฮ → ก";
