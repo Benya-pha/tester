@@ -397,9 +397,7 @@
         </div>
     </div>
 
-</body>
-
-    <script>
+<script>
         // Initialize Lucide Icons
         lucide.createIcons();
 
@@ -894,7 +892,7 @@
         let activePlaylistId = null;
         let editingPlaylistId = null;
         let artistSortMode = "";
-        let artistSortAscending = true;
+        const artistSortDirections = {en:true,th:true};
         let selectedSongIds = new Set();
         let draggedPlaylistId = null;
 
@@ -1015,13 +1013,15 @@
             document.getElementById("playlist-song-count").textContent = playlist ? playlist.songIds.length + " เพลง" : "";
             document.getElementById("sort-artist-en").classList.toggle("active", artistSortMode === "en");
             document.getElementById("sort-artist-th").classList.toggle("active", artistSortMode === "th");
+            document.getElementById("sort-artist-en").textContent = artistSortDirections.en ? "A → Z" : "Z → A";
+            document.getElementById("sort-artist-th").textContent = artistSortDirections.th ? "ก → ฮ" : "ฮ → ก";
             const search = (document.getElementById("song-search").value || "").trim().toLocaleLowerCase();
             let songs = isPlaylist ? songData.songs.filter(s => playlist.songIds.includes(s.id)) : [...songData.songs];
             songs = songs.filter(s => (s.title + " " + s.artist).toLocaleLowerCase().includes(search));
             if (artistSortMode) {
                 songs.sort((a,b) => {
                     const result = a.artist.localeCompare(b.artist, artistSortMode === "th" ? "th" : "en", {sensitivity:"base"});
-                    return artistSortAscending ? result : -result;
+                    return artistSortDirections[artistSortMode] ? result : -result;
                 });
             } else {
                 songs.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
@@ -1047,10 +1047,10 @@
         }
 
         function sortArtists(language) {
-            if (artistSortMode === language) artistSortAscending = !artistSortAscending;
-            else { artistSortMode = language; artistSortAscending = true; }
-            const label = language === "en" ? "sort-artist-en" : "sort-artist-th";
-            document.getElementById(label).textContent = language === "en" ? (artistSortAscending ? "A → Z" : "Z → A") : (artistSortAscending ? "ก → ฮ" : "ฮ → ก");
+            artistSortDirections[language] = !artistSortDirections[language];
+            artistSortMode = language;
+            document.getElementById("sort-artist-en").textContent = artistSortDirections.en ? "A → Z" : "Z → A";
+            document.getElementById("sort-artist-th").textContent = artistSortDirections.th ? "ก → ฮ" : "ฮ → ก";
             renderSongLibrary();
         }
 
