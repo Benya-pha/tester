@@ -790,6 +790,10 @@
             renderSummary();
         }
 
+        function localYearMonth(date = new Date()) {
+            return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,"0");
+        }
+
         function renderSummary() {
             const totalEl = document.getElementById("yearly-total");
             const caption = document.getElementById("summary-caption");
@@ -802,7 +806,7 @@
                 total = sessions.filter(s => s.date && s.date.startsWith(String(summaryYear)))
                     .reduce((sum, s) => sum + (Number(s.myShare) || 0), 0);
             } else {
-                const selected = picker.value || (new Date(summaryYear, summaryMonth, 1).toISOString().slice(0, 7));
+                const selected = picker.value || localYearMonth(new Date(summaryYear, summaryMonth, 1));
                 const parts = selected.split("-");
                 const year = Number(parts[0]);
                 const month = Number(parts[1]) - 1;
@@ -948,6 +952,26 @@
             const container = document.getElementById("playlist-list");
             container.innerHTML = "";
             const playlists = getOrderedPlaylists();
+            if (!window.__playlistPointerReorderBound) {
+                document.addEventListener("pointerup", event => {
+                    if (!draggedPlaylistId) return;
+                    const target = document.elementFromPoint(event.clientX,event.clientY);
+                    const targetRow = target && target.closest("[data-playlist-id]");
+                    const sourceId = draggedPlaylistId;
+                    draggedPlaylistId = null;
+                    if (!targetRow || targetRow.dataset.playlistId === sourceId) return;
+                    const order = getOrderedPlaylists().map(p => p.id);
+                    const from = order.indexOf(sourceId);
+                    const to = order.indexOf(targetRow.dataset.playlistId);
+                    if (from < 0 || to < 0) return;
+                    order.splice(from,1);
+                    order.splice(to,0,sourceId);
+                    songData.playlistOrder = order;
+                    saveSongData();
+                    renderPlaylistNavigation();
+                });
+                window.__playlistPointerReorderBound = true;
+            }
             document.getElementById("playlist-count").textContent = playlists.length;
             playlists.forEach(playlist => {
                 const row = document.createElement("button");
@@ -964,23 +988,6 @@
                 });
                 row.addEventListener("dragend", () => row.classList.remove("dragging"));
                 row.addEventListener("pointerdown", () => { draggedPlaylistId = playlist.id; });
-                row.addEventListener("pointerup", event => {
-                    if (!draggedPlaylistId || draggedPlaylistId === playlist.id) return;
-                    const target = document.elementFromPoint(event.clientX,event.clientY);
-                    const targetRow = target && target.closest("[data-playlist-id]");
-                    if (!targetRow) return;
-                    const targetId = targetRow.dataset.playlistId;
-                    const order = getOrderedPlaylists().map(p => p.id);
-                    const from = order.indexOf(draggedPlaylistId);
-                    const to = order.indexOf(targetId);
-                    if (from >= 0 && to >= 0) {
-                        order.splice(from,1);
-                        order.splice(to,0,draggedPlaylistId);
-                        songData.playlistOrder = order;
-                        saveSongData();
-                        renderPlaylistNavigation();
-                    }
-                });
                 row.addEventListener("dragover", event => event.preventDefault());
                 row.addEventListener("drop", event => {
                     event.preventDefault();
@@ -1249,10 +1256,10 @@
         function initApp() {
             summaryYear = new Date().getFullYear();
             const monthPicker = document.getElementById("summary-month-picker");
-            monthPicker.value = new Date().toISOString().slice(0,7);
+            monthPicker.value = localYearMonth();
             monthPicker.addEventListener("change", renderSummary);
             const historyPicker = document.getElementById("history-month-picker");
-            historyPicker.value = new Date().toISOString().slice(0,7);
+            historyPicker.value = localYearMonth();
             historyMonthValue = historyPicker.value;
             historyPicker.addEventListener("change", () => { historyMonthValue = historyPicker.value; renderHistory(); });
             renderDashboard();
