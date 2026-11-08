@@ -21,15 +21,15 @@
                     },
                     colors: {
                         earth: {
-                            bg: '#F4F1EA',
-                            card: '#FFFFFF',
-                            text: '#4A4238',
-                            muted: '#968C83',
-                            accent: '#C58361',
-                            accentHover: '#B07252',
-                            green: '#889C82',
-                            yellow: '#D4B36A',
-                            border: '#E6E2D8'
+                            bg: '#F7F3F0',
+                            card: '#FFFCFA',
+                            text: '#35232C',
+                            muted: '#8C7D83',
+                            accent: '#713449',
+                            accentHover: '#572638',
+                            green: '#87927D',
+                            yellow: '#C3A36B',
+                            border: '#E8DDE1'
                         }
                     },
                     height: {
@@ -80,192 +80,182 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-24 font-sans">
 
-    <!-- App Container -->
-    <div class="max-w-md mx-auto w-full relative min-h-screen flex flex-col">
-        
-        <!-- Header -->
-        <header class="p-5 flex justify-between items-center sticky top-0 z-10 bg-earth-bg/90 backdrop-blur-sm">
-            <div>
-                <h1 class="text-2xl font-semibold text-earth-text">
-                    KARAOKE REMINDER
-                </h1>
-                <p class="text-xs text-earth-muted">บันทึกประวัติการเสียเสียงและเสียตังค์</p>
-            </div>
-            <div class="bg-earth-card p-2 rounded-full shadow-sm border border-earth-border">
-                <i data-lucide="music-4" class="text-earth-accent w-6 h-6"></i>
-            </div>
-        </header>
-
-        <!-- Dashboard Summary -->
-        <div class="px-5 mb-6">
-            <div class="bg-earth-accent rounded-3xl p-6 shadow-md relative overflow-hidden">
-                <div class="relative z-10">
-                    <p class="text-white/80 text-sm font-medium mb-1">ยอดเปย์คาราโอเกะปีนี้ (ส่วนของคุณ)</p>
-                    <div class="flex items-baseline gap-2 text-white">
-                        <span class="text-2xl font-medium">฿</span>
-                        <h2 class="text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
+<body class="min-h-screen pb-12 font-sans">
+    <div class="min-h-screen w-full">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="py-6 sm:py-8 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-earth-accent text-white flex items-center justify-center shadow-lg shadow-earth-accent/20">
+                        <i data-lucide="music-2" class="w-6 h-6"></i>
                     </div>
-                    <div class="mt-4 flex items-center gap-2 text-sm bg-white/20 w-fit px-3 py-1.5 rounded-2xl text-white">
-                        <i data-lucide="calendar" class="w-4 h-4"></i>
-                        <span id="current-year-display">ปี 2026</span>
+                    <div>
+                        <p class="text-[10px] sm:text-xs tracking-[0.24em] uppercase font-semibold text-earth-accent">Your little money diary</p>
+                        <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-earth-text">PayKaraoke<span class="text-earth-accent">.</span></h1>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="px-5 flex gap-3 mb-8">
-            <button onclick="quickAddToday()" class="flex-1 bg-earth-text hover:bg-black/80 transition-colors text-white py-3.5 rounded-2xl font-medium shadow-sm flex items-center justify-center gap-2 active:scale-95">
-                <i data-lucide="mic" class="w-5 h-5"></i>
-                ร้องวันนี้เลย!
-            </button>
-            <button onclick="openModal()" class="flex-none bg-earth-card hover:bg-gray-50 border border-earth-border transition-colors px-4 rounded-2xl font-medium flex items-center justify-center gap-2 active:scale-95 text-earth-text shadow-sm" title="เพิ่มประวัติย้อนหลัง">
-                <i data-lucide="plus" class="w-5 h-5"></i>
-            </button>
-        </div>
-
-        <!-- History List -->
-        <div class="px-5 flex-1">
-            <div class="flex justify-between items-end mb-4">
-                <h3 class="text-lg font-medium text-earth-text">ประวัติการไปร้อง 🎤</h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="exportToExcel()" class="text-xs bg-earth-green/10 text-earth-green hover:bg-earth-green/20 px-2 py-1 rounded-lg flex items-center gap-1 transition-colors border border-earth-green/20">
-                        <i data-lucide="sheet" class="w-3 h-3"></i> Excel
-                    </button>
-                    <span class="text-xs text-earth-muted bg-earth-border/50 px-2 py-1 rounded-lg" id="total-sessions-count">0 รายการ</span>
+                <div class="hidden sm:flex items-center gap-2 rounded-full border border-earth-border bg-earth-card px-4 py-2 text-xs text-earth-muted">
+                    <span class="w-2 h-2 rounded-full bg-earth-green"></span>
+                    Personal tracker
                 </div>
-            </div>
-            
-            <div id="history-list" class="space-y-3 pb-10">
-                <!-- รายการจะถูกสร้างด้วย JavaScript -->
-            </div>
-        </div>
+                <div class="sm:hidden w-10 h-10 rounded-full border border-earth-border bg-earth-card flex items-center justify-center text-earth-accent">
+                    <i data-lucide="mic-2" class="w-5 h-5"></i>
+                </div>
+            </header>
 
+            <main class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-5 lg:gap-7 pb-10">
+                <section class="rounded-[2rem] bg-earth-accent text-white p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-accent/15">
+                    <div class="absolute -right-12 -top-16 w-64 h-64 rounded-full border border-white/10"></div>
+                    <div class="absolute -right-2 -top-6 w-44 h-44 rounded-full border border-white/10"></div>
+                    <div class="absolute right-8 bottom-8 opacity-[0.08]">
+                        <i data-lucide="music-2" class="w-44 h-44"></i>
+                    </div>
+                    <div class="relative z-10 flex flex-col h-full min-h-[270px]">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-[11px] tracking-[0.2em] uppercase text-white/70 font-medium">Karaoke spending</span>
+                            <span class="rounded-full bg-white/15 border border-white/15 px-3 py-1 text-xs text-white/90">YEARLY SUMMARY</span>
+                        </div>
+                        <div class="mt-10">
+                            <p class="text-sm sm:text-base text-white/75 mb-2">ยอดเปย์คาราโอเกะปีนี้ (ส่วนของคุณ)</p>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-medium text-white/80">฿</span>
+                                <h2 class="text-5xl sm:text-6xl font-semibold tracking-tight" id="yearly-total">0</h2>
+                            </div>
+                            <div class="mt-5 inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/15 px-4 py-2 text-sm text-white">
+                                <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                                <span id="current-year-display">ปี 2026</span>
+                            </div>
+                        </div>
+                        <p class="mt-auto pt-8 text-xs text-white/60">บันทึกทุกโมเมนต์ที่เสียงหายและเงินหาย 🎤</p>
+                    </div>
+                </section>
+
+                <section class="rounded-[2rem] bg-earth-card border border-earth-border p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Make a memory</p>
+                        <h2 class="mt-3 text-2xl sm:text-3xl font-semibold leading-snug text-earth-text">คืนนี้มีนัด<br class="hidden sm:block"/>ร้องเพลงหรือยัง?</h2>
+                        <p class="mt-3 text-sm leading-6 text-earth-muted max-w-sm">เก็บประวัติการร้องและค่าใช้จ่ายของแต่ละรอบไว้ในที่เดียว</p>
+                    </div>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                        <button onclick="quickAddToday()" class="flex-1 bg-earth-text hover:bg-earth-accent transition-colors text-white py-4 px-5 rounded-2xl font-medium shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]">
+                            <i data-lucide="mic-2" class="w-5 h-5"></i>
+                            ร้องวันนี้เลย!
+                        </button>
+                        <button onclick="openModal()" class="flex items-center justify-center gap-2 bg-[#F7F0F2] hover:bg-[#F0E4E8] border border-earth-border text-earth-accent py-4 px-5 rounded-2xl font-medium transition-colors active:scale-[0.98]" title="เพิ่มประวัติย้อนหลัง">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                            <span class="sm:hidden">เพิ่มย้อนหลัง</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="lg:col-span-2 rounded-[2rem] bg-earth-card border border-earth-border p-5 sm:p-7 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                        <div>
+                            <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Your karaoke diary</p>
+                            <h3 class="text-2xl font-semibold text-earth-text mt-1">ประวัติการไปร้อง <span class="text-earth-accent">🎤</span></h3>
+                            <p class="text-sm text-earth-muted mt-1">ทุกครั้งที่ออกไปร้อง มีเรื่องราวและค่าใช้จ่ายให้จดจำ</p>
+                        </div>
+                        <div class="flex items-center gap-2 self-start sm:self-auto">
+                            <span class="text-xs text-earth-muted bg-[#F7F0F2] border border-earth-border px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
+                            <button onclick="exportToExcel()" class="text-xs bg-earth-green/10 text-earth-green hover:bg-earth-green/20 px-3 py-2 rounded-xl flex items-center gap-2 transition-colors border border-earth-green/20 font-medium">
+                                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div id="history-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-2">
+                        <!-- รายการจะถูกสร้างด้วย JavaScript -->
+                    </div>
+                </section>
+            </main>
+            <footer class="pb-8 text-center text-[11px] text-earth-muted">Made for your karaoke memories <span class="text-earth-accent">♥</span></footer>
+        </div>
     </div>
 
-    <!-- Modal Form (Add/Edit) แบบฟิกซ์โครงสร้าง -->
-    <div id="entry-modal" class="fixed inset-0 z-50 hidden flex-col justify-end">
-        <!-- Backdrop -->
+    <div id="entry-modal" class="fixed inset-0 z-50 hidden flex-col justify-end sm:justify-center sm:items-center sm:p-4">
         <div class="absolute inset-0 bg-earth-text/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        
-        <!-- Modal Content (Fixed structure) -->
-        <div class="relative w-full max-w-md mx-auto bg-earth-bg rounded-t-3xl shadow-2xl flex flex-col max-h-[90dvh]" id="modal-content">
-            
-            <!-- Handle indicator for mobile -->
-            <div class="w-full flex justify-center pt-4 pb-2 flex-none cursor-pointer" onclick="closeModal()">
+        <div class="relative w-full max-w-xl mx-auto bg-[#FBF8F6] rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90dvh] overflow-hidden" id="modal-content">
+            <div class="w-full flex justify-center pt-4 pb-2 flex-none cursor-pointer sm:hidden" onclick="closeModal()">
                 <div class="w-12 h-1.5 bg-earth-border rounded-full"></div>
             </div>
-
-            <!-- Modal Header -->
-            <div class="px-6 pb-4 flex justify-between items-center flex-none border-b border-earth-border/50">
-                <h2 class="text-xl font-medium text-earth-text" id="modal-title">เพิ่มประวัติการร้อง</h2>
-                <button type="button" onclick="closeModal()" class="p-2 bg-earth-card border border-earth-border rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
+            <div class="px-6 sm:px-8 py-5 flex justify-between items-center flex-none border-b border-earth-border">
+                <div>
+                    <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Session details</p>
+                    <h2 class="text-xl sm:text-2xl font-semibold text-earth-text mt-1" id="modal-title">เพิ่มประวัติการร้อง</h2>
+                </div>
+                <button type="button" onclick="closeModal()" class="p-2.5 bg-earth-card border border-earth-border rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
-            <!-- Scrollable Form Body -->
             <form id="karaoke-form" onsubmit="saveEntry(event)" class="flex flex-col flex-1 overflow-hidden">
-                
-                <!-- ส่วนเนื้อหาที่เลื่อนได้ -->
-                <div class="px-6 py-5 overflow-y-auto flex-1 space-y-4 overscroll-contain">
+                <div class="px-6 sm:px-8 py-6 overflow-y-auto flex-1 space-y-5 overscroll-contain">
                     <input type="hidden" id="entry-id">
-                    
-                    <!-- Date -->
                     <div>
-                        <label class="block text-sm font-medium text-earth-muted mb-1.5">วันที่ไปร้อง</label>
-                        <input type="date" id="entry-date" required class="w-full bg-earth-card border border-earth-border rounded-2xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-1 focus:ring-earth-accent transition-colors appearance-none">
+                        <label class="block text-sm font-medium text-earth-muted mb-2">วันที่ไปร้อง</label>
+                        <input type="date" id="entry-date" required class="w-full bg-earth-card border border-earth-border rounded-xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors appearance-none">
                     </div>
-
                     <div class="grid grid-cols-2 gap-4">
-                        <!-- Hours -->
                         <div>
-                            <label class="block text-sm font-medium text-earth-muted mb-1.5">จำนวนชั่วโมง</label>
+                            <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนชั่วโมง</label>
                             <div class="relative">
-                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-2xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-1 focus:ring-earth-accent transition-colors">
+                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">ชม.</span>
                             </div>
                         </div>
-
-                        <!-- People -->
                         <div>
-                            <label class="block text-sm font-medium text-earth-muted mb-1.5">จำนวนคน</label>
+                            <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนคน</label>
                             <div class="relative">
-                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-2xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-1 focus:ring-earth-accent transition-colors">
+                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">คน</span>
                             </div>
                         </div>
                     </div>
-                    <!-- Note for auto calculate -->
-                    <p class="text-[11px] text-earth-accent/80 text-right mt-1">* 1-7 คน ชม.ละ 100 ฿ | 8 คนขึ้นไป ชม.ละ 150 ฿</p>
-
-                    <!-- Payer -->
+                    <p class="text-xs text-earth-accent text-right">* 1-7 คน ชม.ละ 100 ฿ | 8 คนขึ้นไป ชม.ละ 150 ฿</p>
                     <div>
                         <label class="block text-sm font-medium text-earth-muted mb-2">ใครจ่ายบิลก่อน?</label>
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-2 gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="ฉันจ่าย" class="peer sr-only" checked onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-2xl py-3 peer-checked:bg-earth-accent/10 peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">
-                                    ฉันเอง 🙋🏻‍♂️
-                                </div>
+                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-[#F7F0F2] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="เพื่อนจ่าย" class="peer sr-only" onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-2xl py-3 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">
-                                    เพื่อนจ่ายก่อน 🫂
-                                </div>
+                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">เพื่อนจ่ายก่อน 🫂</div>
                             </label>
                         </div>
-                        
-                        <!-- ช่องกรอกชื่อเพื่อน (จะโชว์ก็ต่อเมื่อเลือก "เพื่อนจ่าย") -->
                         <div id="friend-name-container" class="hidden mt-3">
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i data-lucide="user" class="h-4 w-4 text-earth-muted"></i>
                                 </div>
-                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border border-earth-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green transition-colors">
+                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border border-earth-border rounded-xl pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green/20 transition-colors">
                             </div>
                         </div>
                     </div>
-
-                    <div class="bg-earth-card p-5 rounded-2xl border border-earth-border mt-4 shadow-sm space-y-4 relative">
-                        <!-- Total Cost -->
+                    <div class="bg-earth-card p-5 sm:p-6 rounded-2xl border border-earth-border space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-earth-muted mb-1.5 flex justify-between">
+                            <label class="block text-sm font-medium text-earth-muted mb-2 flex justify-between">
                                 <span>ค่าใช้จ่ายรวม (บาท)</span>
                                 <span class="text-[10px] text-earth-muted font-normal">*แก้ไขได้ถ้ามีค่าอาหาร</span>
                             </label>
-                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-earth-bg border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-1 focus:ring-earth-accent text-right transition-colors">
+                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#F7F3F0] border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
-
-                        <!-- My Share -->
                         <div>
-                            <label class="block text-sm font-medium text-earth-accent mb-1.5 flex justify-between">
-                                <span>ส่วนที่ฉันต้องจ่าย (บาท)</span>
-                            </label>
-                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-earth-accent/5 border border-earth-accent/30 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-1 focus:ring-earth-accent text-right transition-colors">
+                            <label class="block text-sm font-medium text-earth-accent mb-2 flex justify-between"><span>ส่วนที่ฉันต้องจ่าย (บาท)</span></label>
+                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-[#F7F0F2] border border-earth-accent/25 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                     </div>
-                    
-                    <!-- พื้นที่ว่างด้านล่างเผื่อเลื่อนสุด -->
-                    <div class="h-4"></div>
+                    <div class="h-2"></div>
                 </div>
-
-                <!-- Sticky Footer Buttons (ล็อคปุ่มไว้ล่างสุด) -->
-                <div class="px-6 py-4 bg-earth-bg border-t border-earth-border flex gap-3 flex-none pb-8 sm:pb-4 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)]">
-                    <button type="button" id="btn-delete" onclick="deleteCurrentEntry()" class="hidden flex-none bg-[#ffebe6] text-[#d65d45] border border-[#d65d45]/20 hover:bg-[#ffd6cc] px-4 rounded-2xl font-medium transition-colors active:scale-95">
+                <div class="px-6 sm:px-8 py-4 bg-[#FBF8F6] border-t border-earth-border flex gap-3 flex-none pb-7 sm:pb-5">
+                    <button type="button" id="btn-delete" onclick="deleteCurrentEntry()" class="hidden flex-none bg-[#FBE9E8] text-[#B94A48] border border-[#B94A48]/20 hover:bg-[#F6DAD8] px-4 rounded-xl font-medium transition-colors active:scale-95">
                         <i data-lucide="trash-2" class="w-5 h-5"></i>
                     </button>
-                    <button type="submit" class="flex-1 bg-earth-accent hover:bg-earth-accentHover text-white py-3.5 rounded-2xl font-medium shadow-sm transition-colors text-lg active:scale-95">
-                        บันทึกข้อมูล
-                    </button>
+                    <button type="submit" class="flex-1 bg-earth-accent hover:bg-earth-accentHover text-white py-3.5 rounded-xl font-medium shadow-sm transition-colors active:scale-[0.99]">บันทึกข้อมูล</button>
                 </div>
-
             </form>
         </div>
     </div>
+</body>
 
     <script>
         // Initialize Lucide Icons
