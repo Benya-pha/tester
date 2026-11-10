@@ -21,15 +21,15 @@
                     },
                     colors: {
                         earth: {
-                            bg: '#F7F3F0',
-                            card: '#FFFCFA',
-                            text: '#35232C',
-                            muted: '#8C7D83',
-                            accent: '#713449',
-                            accentHover: '#572638',
-                            green: '#87927D',
-                            yellow: '#C3A36B',
-                            border: '#E8DDE1'
+                            bg: '#FFFBE8',
+                            card: '#FFFDF4',
+                            text: '#514A20',
+                            muted: '#898052',
+                            accent: '#788B3F',
+                            accentHover: '#627532',
+                            green: '#A8B66A',
+                            yellow: '#E6CF68',
+                            border: '#E9E1B6'
                         }
                     },
                     height: {
@@ -44,8 +44,8 @@
     </script>
     <style>
         body {
-            background-color: #F4F1EA;
-            color: #4A4238;
+            background-color: #FFF9DF;
+            color: #514A20;
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -78,6 +78,32 @@
             overflow: hidden;
             touch-action: none;
         }
+
+        body { background-color: #FFFBE8; color: #514A20; }
+        .history-sort-button, .sort-text-button {
+            border: 1px solid #E9E1B6; background: #FFFDF4; color: #898052;
+            border-radius: 12px; padding: 8px 13px; font-size: 12px; transition: .15s;
+        }
+        .history-sort-button.active, .sort-text-button.active {
+            background: #788B3F; border-color: #788B3F; color: #fff;
+        }
+        .library-nav-item {
+            padding: 11px 12px; border-radius: 12px; color: #71683D; font-size: 13px;
+        }
+        .library-nav-item.active { background: #F2EFCF; color: #788B3F; font-weight: 500; }
+        .playlist-row {
+            display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+            padding:10px 11px; border-radius:12px; color:#71683D; font-size:13px; cursor:grab;
+        }
+        .playlist-row.active { background:#F2EFCF; color:#788B3F; font-weight:500; }
+        .playlist-row.dragging { opacity:.4; }
+        .song-row { display:flex; align-items:center; gap:12px; padding:13px 2px; }
+        .song-open { color:#788B3F; }
+        .song-action { border:1px solid #E9E1B6; border-radius:9px; padding:6px 9px; font-size:11px; color:#788B3F; }
+        .modal-visible { display:flex !important; }
+        @media (min-width:640px) {
+            #song-library-view .playlist-row { padding:11px 12px; }
+        }
     </style>
 </head>
 
@@ -94,61 +120,59 @@
                         <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-earth-text">PayKaraoke<span class="text-earth-accent">.</span></h1>
                     </div>
                 </div>
-                <div class="hidden sm:flex items-center gap-2 rounded-full border border-earth-border bg-earth-card px-4 py-2 text-xs text-earth-muted">
+                <div class="hidden sm:flex items-center gap-2 rounded-full border-0 bg-earth-card px-4 py-2 text-xs text-earth-muted">
                     <span class="w-2 h-2 rounded-full bg-earth-green"></span>
                     Personal tracker
                 </div>
-                <div class="sm:hidden w-10 h-10 rounded-full border border-earth-border bg-earth-card flex items-center justify-center text-earth-accent">
-                    <i data-lucide="mic-2" class="w-5 h-5"></i>
-                </div>
+                <button type="button" onclick="openSongLibrary()" aria-label="Song List" class="w-11 h-11 rounded-full border-0 bg-earth-card flex items-center justify-center text-earth-accent hover:bg-[#F2EFCF] transition-colors">
+                    <i data-lucide="music-2" class="w-5 h-5"></i>
+                </button>
             </header>
 
             <main class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-5 lg:gap-7 pb-10">
-                <section class="rounded-[2rem] bg-earth-accent text-white p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-accent/15">
-                    <div class="absolute -right-12 -top-16 w-64 h-64 rounded-full border border-white/10"></div>
-                    <div class="absolute -right-2 -top-6 w-44 h-44 rounded-full border border-white/10"></div>
-                    <div class="absolute right-8 bottom-8 opacity-[0.08]">
-                        <i data-lucide="music-2" class="w-44 h-44"></i>
-                    </div>
-                    <div class="relative z-10 flex flex-col h-full min-h-[270px]">
+                <section class="rounded-[2rem] bg-earth-yellow text-earth-text p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-lg shadow-earth-yellow/20 border-0">
+                    <div class="relative z-10">
                         <div class="flex items-center justify-between gap-3">
-                            <span class="text-[11px] tracking-[0.2em] uppercase text-white/70 font-medium">Karaoke spending</span>
-                            <span class="rounded-full bg-white/15 border border-white/15 px-3 py-1 text-xs text-white/90">YEARLY SUMMARY</span>
-                        </div>
-                        <div class="mt-10">
-                            <p class="text-sm sm:text-base text-white/75 mb-2">ยอดเปย์คาราโอเกะปีนี้ (ส่วนของคุณ)</p>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-2xl font-medium text-white/80">฿</span>
-                                <h2 class="text-5xl sm:text-6xl font-semibold tracking-tight" id="yearly-total">0</h2>
+                            <span class="text-[11px] tracking-[0.2em] uppercase text-earth-text/70 font-medium">Karaoke spending</span>
+                            <div class="flex rounded-full bg-white/45 p-1 text-[11px]">
+                                <button id="year-summary-tab" onclick="setSummaryMode('year')" class="rounded-full px-3 py-1.5 bg-white text-earth-text font-medium shadow-sm">Year</button>
+                                <button id="month-summary-tab" onclick="setSummaryMode('month')" class="rounded-full px-3 py-1.5 text-earth-text/75">Month</button>
                             </div>
-                            <div class="mt-5 inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/15 px-4 py-2 text-sm text-white">
-                                <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                        </div>
+                        <p id="summary-caption" class="text-sm text-earth-text/75 mt-5 mb-1">คาราโอเกะปี 2026 (ส่วนของคุณ)</p>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-medium text-earth-text/80">฿</span>
+                            <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
+                        </div>
+                        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                            <div id="summary-year-controls" class="inline-flex items-center gap-2 rounded-full bg-white/45 border-0 px-3 py-2 text-sm text-earth-text">
+                                <button id="summary-prev" onclick="shiftSummary(-1)" aria-label="ก่อนหน้า" class="px-1 text-earth-text/75 hover:text-earth-text">‹</button>
                                 <span id="current-year-display">ปี 2026</span>
+                                <button id="summary-next" onclick="shiftSummary(1)" aria-label="ถัดไป" class="px-1 text-earth-text/75 hover:text-earth-text">›</button>
                             </div>
+                            <label id="summary-month-control" class="hidden relative rounded-xl border-0 bg-white/95 text-earth-text px-4 py-3 text-sm font-medium min-w-[190px] text-center">
+                                <span id="summary-month-label">November 2026</span>
+                                <input id="summary-month-picker" type="month" lang="en-US" aria-label="เลือกเดือนและปี" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                            </label>
                         </div>
-                        <p class="mt-auto pt-8 text-xs text-white/60">บันทึกทุกโมเมนต์ที่เสียงหายและเงินหาย 🎤</p>
                     </div>
                 </section>
 
-                <section class="rounded-[2rem] bg-earth-card border border-earth-border p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+                <section class="rounded-[2rem] bg-[#FFFDF4] p-6 sm:p-8 shadow-md shadow-[#766B35]/[0.07] flex flex-col justify-between">
                     <div>
                         <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Make a memory</p>
                         <h2 class="mt-3 text-2xl sm:text-3xl font-semibold leading-snug text-earth-text">คืนนี้มีนัด<br class="hidden sm:block"/>ร้องเพลงหรือยัง?</h2>
                         <p class="mt-3 text-sm leading-6 text-earth-muted max-w-sm">เก็บประวัติการร้องและค่าใช้จ่ายของแต่ละรอบไว้ในที่เดียว</p>
                     </div>
-                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                        <button onclick="quickAddToday()" class="flex-1 bg-earth-text hover:bg-earth-accent transition-colors text-white py-4 px-5 rounded-2xl font-medium shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]">
-                            <i data-lucide="mic-2" class="w-5 h-5"></i>
-                            ร้องวันนี้เลย!
-                        </button>
-                        <button onclick="openModal()" class="flex items-center justify-center gap-2 bg-[#F7F0F2] hover:bg-[#F0E4E8] border border-earth-border text-earth-accent py-4 px-5 rounded-2xl font-medium transition-colors active:scale-[0.98]" title="เพิ่มประวัติย้อนหลัง">
+                    <div class="mt-8">
+                        <button onclick="openModal()" class="w-full bg-earth-text hover:bg-earth-accent transition-colors text-white py-4 px-5 rounded-2xl font-medium shadow-sm flex items-center justify-center gap-2 active:scale-[0.98]">
                             <i data-lucide="plus" class="w-5 h-5"></i>
-                            <span class="sm:hidden">เพิ่มย้อนหลัง</span>
+                            เพิ่มประวัติการร้อง
                         </button>
                     </div>
                 </section>
 
-                <section class="lg:col-span-2 rounded-[2rem] bg-earth-card border border-earth-border p-5 sm:p-7 shadow-sm">
+                <section class="lg:col-span-2 rounded-[2rem] bg-[#E7EBCB] p-5 sm:p-7 shadow-md shadow-[#596A37]/[0.08]">
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
                         <div>
                             <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Your karaoke diary</p>
@@ -156,33 +180,39 @@
                             <p class="text-sm text-earth-muted mt-1">ทุกครั้งที่ออกไปร้อง มีเรื่องราวและค่าใช้จ่ายให้จดจำ</p>
                         </div>
                         <div class="flex items-center gap-2 self-start sm:self-auto">
-                            <span class="text-xs text-earth-muted bg-[#F7F0F2] border border-earth-border px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
+                            <span class="text-xs text-earth-muted bg-[#F2EFCF] border-0 px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
                             <button onclick="exportToExcel()" class="text-xs bg-earth-green/10 text-earth-green hover:bg-earth-green/20 px-3 py-2 rounded-xl flex items-center gap-2 transition-colors border border-earth-green/20 font-medium">
                                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel
                             </button>
                         </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <button id="history-sort-day" onclick="setHistorySort('day')" class="history-sort-button active">วัน ↓</button>
+                        <button id="history-sort-month" onclick="setHistorySort('month')" class="history-sort-button">เดือน</button>
+                        <button id="history-sort-price" onclick="setHistorySort('price')" class="history-sort-button">ราคา ↓</button>
+                        <input id="history-month-picker" type="month" class="hidden rounded-xl border-0 bg-white px-3 py-2 text-sm text-earth-text" />
                     </div>
                     <div id="history-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-2">
                         <!-- รายการจะถูกสร้างด้วย JavaScript -->
                     </div>
                 </section>
             </main>
-            <footer class="pb-8 text-center text-[11px] text-earth-muted">Made for your karaoke memories <span class="text-earth-accent">♥</span></footer>
+            <footer class="pb-8 text-center text-[11px] text-earth-muted">© 2026 PayKaraoke · Created by nong aoey</footer>
         </div>
     </div>
 
     <div id="entry-modal" class="fixed inset-0 z-50 hidden flex-col justify-end sm:justify-center sm:items-center sm:p-4">
         <div class="absolute inset-0 bg-earth-text/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative w-full max-w-xl mx-auto bg-[#FBF8F6] rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90dvh] overflow-hidden" id="modal-content">
+        <div class="relative w-full max-w-xl mx-auto bg-[#FFFBEA] rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90dvh] overflow-hidden" id="modal-content">
             <div class="w-full flex justify-center pt-4 pb-2 flex-none cursor-pointer sm:hidden" onclick="closeModal()">
                 <div class="w-12 h-1.5 bg-earth-border rounded-full"></div>
             </div>
-            <div class="px-6 sm:px-8 py-5 flex justify-between items-center flex-none border-b border-earth-border">
+            <div class="px-6 sm:px-8 py-5 flex justify-between items-center flex-none border-b-0">
                 <div>
                     <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Session details</p>
                     <h2 class="text-xl sm:text-2xl font-semibold text-earth-text mt-1" id="modal-title">เพิ่มประวัติการร้อง</h2>
                 </div>
-                <button type="button" onclick="closeModal()" class="p-2.5 bg-earth-card border border-earth-border rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
+                <button type="button" onclick="closeModal()" class="p-2.5 bg-earth-card border-0 rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -191,20 +221,20 @@
                     <input type="hidden" id="entry-id">
                     <div>
                         <label class="block text-sm font-medium text-earth-muted mb-2">วันที่ไปร้อง</label>
-                        <input type="date" id="entry-date" required class="w-full bg-earth-card border border-earth-border rounded-xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors appearance-none">
+                        <input type="date" id="entry-date" required class="w-full bg-earth-card border-0 rounded-xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors appearance-none">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนชั่วโมง</label>
                             <div class="relative">
-                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
+                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border-0 rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">ชม.</span>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนคน</label>
                             <div class="relative">
-                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
+                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border-0 rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">คน</span>
                             </div>
                         </div>
@@ -215,11 +245,11 @@
                         <div class="grid grid-cols-2 gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="ฉันจ่าย" class="peer sr-only" checked onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-[#F7F0F2] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
+                                <div class="text-center text-sm bg-earth-card border-0 rounded-xl py-3.5 peer-checked:bg-[#F2EFCF] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="เพื่อนจ่าย" class="peer sr-only" onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">เพื่อนจ่ายก่อน 🫂</div>
+                                <div class="text-center text-sm bg-earth-card border-0 rounded-xl py-3.5 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">เพื่อนจ่ายก่อน 🫂</div>
                             </label>
                         </div>
                         <div id="friend-name-container" class="hidden mt-3">
@@ -227,26 +257,26 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i data-lucide="user" class="h-4 w-4 text-earth-muted"></i>
                                 </div>
-                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border border-earth-border rounded-xl pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green/20 transition-colors">
+                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border-0 rounded-xl pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green/20 transition-colors">
                             </div>
                         </div>
                     </div>
-                    <div class="bg-earth-card p-5 sm:p-6 rounded-2xl border border-earth-border space-y-4">
+                    <div class="bg-[#FFFDF4] p-5 sm:p-6 rounded-2xl shadow-sm shadow-[#766B35]/[0.06] space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2 flex justify-between">
                                 <span>ค่าใช้จ่ายรวม (บาท)</span>
                                 <span class="text-[10px] text-earth-muted font-normal">*แก้ไขได้ถ้ามีค่าอาหาร</span>
                             </label>
-                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#F7F3F0] border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
+                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#FFFBE8] border-0 rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-earth-accent mb-2 flex justify-between"><span>ส่วนที่ฉันต้องจ่าย (บาท)</span></label>
-                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-[#F7F0F2] border border-earth-accent/25 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
+                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-[#F2EFCF] border border-earth-accent/25 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                     </div>
                     <div class="h-2"></div>
                 </div>
-                <div class="px-6 sm:px-8 py-4 bg-[#FBF8F6] border-t border-earth-border flex gap-3 flex-none pb-7 sm:pb-5">
+                <div class="px-6 sm:px-8 py-4 bg-[#FFFBEA] border-t-0 flex gap-3 flex-none pb-7 sm:pb-5">
                     <button type="button" id="btn-delete" onclick="deleteCurrentEntry()" class="hidden flex-none bg-[#FBE9E8] text-[#B94A48] border border-[#B94A48]/20 hover:bg-[#F6DAD8] px-4 rounded-xl font-medium transition-colors active:scale-95">
                         <i data-lucide="trash-2" class="w-5 h-5"></i>
                     </button>
@@ -255,9 +285,117 @@
             </form>
         </div>
     </div>
-</body>
 
-    <script>
+    <section id="song-library-view" class="hidden min-h-screen">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <header class="flex items-center justify-between gap-3 mb-7">
+                <div class="flex items-center gap-3">
+                    <button onclick="closeSongLibrary()" class="w-10 h-10 rounded-full border-0 bg-earth-card text-earth-accent flex items-center justify-center" aria-label="กลับ">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <div>
+                        <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Your music space</p>
+                        <h1 class="text-2xl sm:text-3xl font-semibold text-earth-text">Song List</h1>
+                    </div>
+                </div>
+                <button onclick="openSongForm()" class="rounded-xl bg-earth-accent text-white px-4 py-3 text-sm font-medium flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i><span>เพิ่มเพลง</span>
+                </button>
+            </header>
+            <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
+                <aside class="rounded-3xl bg-[#FFFDF4] p-4 h-fit shadow-sm shadow-[#766B35]/[0.06]">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-semibold text-earth-text">คลังเพลง</h2>
+                        <button onclick="openPlaylistForm()" class="w-8 h-8 rounded-full bg-[#F2EFCF] text-earth-accent flex items-center justify-center" title="สร้าง Playlist"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                    </div>
+                    <button id="all-songs-nav" onclick="showAllSongs()" class="library-nav-item active w-full text-left">♫ เพลงทั้งหมด <span id="all-songs-count" class="float-right">0</span></button>
+                    <div class="border-t-0 my-4"></div>
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-xs tracking-wide text-earth-muted uppercase">My Playlists</h3>
+                        <span id="playlist-count" class="text-xs text-earth-muted">0</span>
+                    </div>
+                    <div id="playlist-list" class="space-y-1"></div>
+                    <p class="text-[11px] text-earth-muted mt-3">ลาก Playlist เพื่อเปลี่ยนลำดับได้</p>
+                </aside>
+                <main class="min-w-0">
+                    <div class="rounded-3xl bg-[#FFFDF4] p-4 sm:p-6 shadow-sm shadow-[#766B35]/[0.06]">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                            <div>
+                                <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Music library</p>
+                                <h2 id="library-heading" class="text-2xl font-semibold text-earth-text">เพลงทั้งหมด</h2>
+                                <p id="library-subheading" class="text-sm text-earth-muted mt-1">เพลงทั้งหมดที่เพิ่มไว้ในคลัง</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="sortArtists('en')" id="sort-artist-en" class="sort-text-button">A → Z</button>
+                                <button onclick="sortArtists('th')" id="sort-artist-th" class="sort-text-button">ก → ฮ</button>
+                            </div>
+                        </div>
+                        <div class="relative mb-4">
+                            <i data-lucide="search" class="w-4 h-4 text-earth-muted absolute left-3 top-1/2 -translate-y-1/2"></i>
+                            <input id="song-search" oninput="renderSongLibrary()" type="search" placeholder="ค้นหาชื่อเพลงหรือศิลปิน..." class="w-full rounded-xl bg-[#FFFBE8] pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-accent">
+                        </div>
+                        <div id="playlist-actions" class="hidden items-center justify-between gap-2 mb-4">
+                            <span class="text-xs text-earth-muted" id="playlist-song-count"></span>
+                            <div class="flex items-center gap-3">
+                                <button onclick="openAddSongsToPlaylist()" class="rounded-xl bg-earth-accent text-white px-3 py-2 text-xs">เพิ่มเพลงจากคลัง</button>
+                                <button onclick="openPlaylistForm('rename')" aria-label="เปลี่ยนชื่อ Playlist" title="เปลี่ยนชื่อ Playlist" class="inline-flex items-center gap-1.5 rounded-lg px-2 py-2 text-xs text-earth-muted hover:text-earth-text hover:bg-earth-bg transition-colors">เปลี่ยนชื่อ <i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="deleteCurrentPlaylist()" aria-label="ลบ Playlist" title="ลบ Playlist" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                        <div id="song-list" class="divide-y divide-earth-bg"></div>
+                        <div id="song-empty-state" class="hidden text-center py-12 text-earth-muted">
+                            <div class="text-3xl mb-2">♫</div><p id="song-empty-message">ยังไม่มีเพลงในคลัง</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <div id="song-form-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closeSongForm()"></div>
+        <div class="relative w-full max-w-lg bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-5">
+                <div><p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Add to library</p><h3 class="text-xl font-semibold text-earth-text">เพิ่มเพลง</h3></div>
+                <button onclick="closeSongForm()" class="w-9 h-9 rounded-full border-0 text-earth-muted"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <label class="block text-xs text-earth-muted mb-2">วาง URL เพลง (ไม่บังคับ)</label>
+            <div class="flex gap-2 mb-2">
+                <input id="song-url" type="url" placeholder="YouTube / Spotify / Apple Music" class="min-w-0 flex-1 rounded-xl bg-[#FFFBE8] px-3 py-3 text-sm">
+                <button id="fetch-song-metadata" onclick="fetchSongMetadata()" class="rounded-xl bg-[#F2EFCF] text-earth-accent px-3 text-xs font-medium">ดึงข้อมูล</button>
+            </div>
+            <p id="metadata-status" class="text-[11px] text-earth-muted mb-4">ระบบจะพยายามอ่านชื่อเพลงและศิลปิน หากไม่สำเร็จกรอกเองได้</p>
+            <label class="block text-xs text-earth-muted mb-2">ชื่อเพลง</label>
+            <input id="song-title" type="text" placeholder="ชื่อเพลง" class="w-full rounded-xl border-0 bg-white px-3 py-3 text-sm mb-3">
+            <label class="block text-xs text-earth-muted mb-2">ศิลปิน</label>
+            <input id="song-artist" type="text" placeholder="ชื่อศิลปิน" class="w-full rounded-xl border-0 bg-white px-3 py-3 text-sm mb-5">
+            <div class="flex gap-2">
+                <button onclick="closeSongForm()" class="flex-1 rounded-xl border-0 py-3 text-sm">ยกเลิก</button>
+                <button onclick="saveSong()" class="flex-1 rounded-xl bg-earth-accent text-white py-3 text-sm font-medium">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="playlist-form-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closePlaylistForm()"></div>
+        <div class="relative w-full max-w-md bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
+            <div class="flex justify-between items-center mb-4"><h3 id="playlist-form-title" class="text-xl font-semibold text-earth-text">สร้าง Playlist</h3><button onclick="closePlaylistForm()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+            <input id="playlist-name" type="text" maxlength="50" placeholder="ชื่อ Playlist" class="w-full rounded-xl border-0 px-4 py-3 mb-4">
+            <div class="flex gap-2"><button onclick="closePlaylistForm()" class="flex-1 rounded-xl border-0 py-3">ยกเลิก</button><button onclick="savePlaylist()" class="flex-1 rounded-xl bg-earth-accent text-white py-3">บันทึก</button></div>
+        </div>
+    </div>
+
+    <div id="add-songs-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closeAddSongsModal()"></div>
+        <div class="relative w-full max-w-xl bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90dvh] flex flex-col">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-semibold text-earth-text">เลือกเพลงจากคลัง</h3><button onclick="closeAddSongsModal()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+            <input id="add-songs-search" oninput="renderAddSongsChoices()" placeholder="ค้นหาเพลงหรือศิลปิน..." class="w-full rounded-xl border-0 px-3 py-3 text-sm mb-3">
+            <div id="add-songs-choices" class="overflow-y-auto flex-1 divide-y divide-earth-bg"></div>
+            <button onclick="confirmAddSongsToPlaylist()" class="w-full rounded-xl bg-earth-accent text-white py-3 mt-4">เพิ่มเพลงที่เลือก</button>
+        </div>
+    </div>
+
+<script>
         // Initialize Lucide Icons
         lucide.createIcons();
 
@@ -310,7 +448,7 @@
 
             if (sessions.length === 0) {
                 historyList.innerHTML = `
-                    <div class="text-center py-12 px-4 bg-earth-card border border-earth-border rounded-3xl shadow-sm">
+                    <div class="text-center py-12 px-4 bg-earth-card border-0 rounded-3xl shadow-sm shadow-[#766B35]/[0.06]">
                         <div class="bg-earth-bg w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i data-lucide="mic-off" class="w-8 h-8 text-earth-muted"></i>
                         </div>
@@ -345,11 +483,11 @@
                 }
 
                 const card = document.createElement('div');
-                card.className = 'bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border border-earth-border shadow-sm transition-colors active:scale-[0.98]';
+                card.className = 'bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border-0 shadow-sm transition-colors active:scale-[0.98]';
                 card.onclick = () => openModal(session.id);
                 
                 card.innerHTML = `
-                    <div class="bg-earth-bg rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border border-earth-border/50 flex-none">
+                    <div class="bg-earth-bg rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border-0/50 flex-none">
                         <span class="text-[11px] text-earth-muted leading-tight">${dateObj.toLocaleDateString('th-TH', { month: 'short'})}</span>
                         <span class="text-lg font-medium leading-none text-earth-text mt-0.5">${dateObj.getDate()}</span>
                     </div>
@@ -618,6 +756,519 @@
                 }
             };
             window.requestAnimationFrame(step);
+        }
+
+
+        // --- PayKaraoke redesign controls ---
+        let summaryMode = "year";
+        let summaryYear = new Date().getFullYear();
+        let summaryMonth = new Date().getMonth();
+        let historySort = "day";
+        let historyDayAscending = false;
+        let historyPriceAscending = false;
+        let historyMonthValue = "";
+
+        function setSummaryMode(mode) {
+            summaryMode = mode;
+            document.getElementById("year-summary-tab").classList.toggle("bg-white", mode === "year");
+            document.getElementById("year-summary-tab").classList.toggle("text-earth-accent", mode === "year");
+            document.getElementById("year-summary-tab").classList.toggle("text-white/80", mode !== "year");
+            document.getElementById("month-summary-tab").classList.toggle("bg-white", mode === "month");
+            document.getElementById("month-summary-tab").classList.toggle("text-earth-accent", mode === "month");
+            document.getElementById("month-summary-tab").classList.toggle("text-white/80", mode !== "month");
+            document.getElementById("summary-year-controls").classList.toggle("hidden", mode === "month");
+            document.getElementById("summary-month-control").classList.toggle("hidden", mode !== "month");
+            renderSummary();
+        }
+
+        function shiftSummary(direction) {
+            summaryYear += direction;
+            renderSummary();
+        }
+
+        function localYearMonth(date = new Date()) {
+            return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2,"0");
+        }
+
+        function renderSummary() {
+            const totalEl = document.getElementById("yearly-total");
+            const caption = document.getElementById("summary-caption");
+            const label = document.getElementById("current-year-display");
+            const picker = document.getElementById("summary-month-picker");
+            let total = 0;
+            if (summaryMode === "year") {
+                label.textContent = "ปี " + summaryYear;
+                caption.textContent = "คาราโอเกะปี " + summaryYear + " (ส่วนของคุณ)";
+                total = sessions.filter(s => s.date && s.date.startsWith(String(summaryYear)))
+                    .reduce((sum, s) => sum + (Number(s.myShare) || 0), 0);
+            } else {
+                const selected = picker.value || localYearMonth(new Date(summaryYear, summaryMonth, 1));
+                const parts = selected.split("-");
+                const year = Number(parts[0]);
+                const month = Number(parts[1]) - 1;
+                summaryYear = year;
+                summaryMonth = month;
+                const monthDate = new Date(year, month, 1);
+                const monthLabel = new Intl.DateTimeFormat("en-US", {month:"long", year:"numeric"}).format(monthDate);
+                document.getElementById("summary-month-label").textContent = monthLabel;
+                caption.textContent = "คาราโอเกะเดือน " + monthLabel + " (ส่วนของคุณ)";
+                total = sessions.filter(s => s.date && s.date.startsWith(selected))
+                    .reduce((sum, s) => sum + (Number(s.myShare) || 0), 0);
+            }
+            totalEl.textContent = total.toLocaleString();
+        }
+
+        function renderDashboard() {
+            renderSummary();
+            countDisplay.textContent = sessions.length + " รายการ";
+        }
+
+        function setHistorySort(type) {
+            if (historySort === type) {
+                if (type === "day") historyDayAscending = !historyDayAscending;
+                if (type === "price") historyPriceAscending = !historyPriceAscending;
+            } else {
+                historySort = type;
+            }
+            const monthPicker = document.getElementById("history-month-picker");
+            monthPicker.classList.toggle("hidden", historySort !== "month");
+            ["day","month","price"].forEach(key => {
+                const button = document.getElementById("history-sort-" + key);
+                button.classList.toggle("active", key === historySort);
+                button.textContent = key === "day" ? "วัน " + (historyDayAscending ? "↑" : "↓") :
+                    key === "price" ? "ราคา " + (historyPriceAscending ? "↑" : "↓") : "เดือน";
+            });
+            renderHistory();
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = "";
+            let visibleSessions = [...sessions];
+            if (historySort === "month" && historyMonthValue) {
+                visibleSessions = visibleSessions.filter(s => s.date && s.date.startsWith(historyMonthValue));
+            }
+            visibleSessions.sort((a,b) => {
+                if (historySort === "price") {
+                    const diff = (Number(a.myShare)||0) - (Number(b.myShare)||0);
+                    return historyPriceAscending ? diff : -diff;
+                }
+                const diff = new Date(a.date) - new Date(b.date);
+                return historyDayAscending ? diff : -diff;
+            });
+            if (visibleSessions.length === 0) {
+                historyList.innerHTML = '<div class="text-center py-12 px-4 bg-earth-card border-0 rounded-3xl shadow-sm shadow-[#766B35]/[0.06] md:col-span-2"><p class="text-earth-text font-medium">' +
+                    (sessions.length === 0 ? "ยังไม่มีประวัติการร้องเพลง" : "ไม่พบประวัติในช่วงเวลานี้") +
+                    '</p><p class="text-earth-muted text-sm mt-1">ลองเปลี่ยนตัวกรองหรือเพิ่มประวัติใหม่</p></div>';
+                return;
+            }
+            visibleSessions.forEach(session => {
+                const dateObj = new Date(session.date);
+                let payerBadge = "";
+                let payerColor = "";
+                if (session.payer === "ฉันจ่าย") {
+                    payerBadge = "ฉันจ่าย";
+                    payerColor = "text-earth-accent bg-earth-accent/10 border-earth-accent/20";
+                } else if (session.payer === "เพื่อนจ่าย") {
+                    payerBadge = session.friendName && session.friendName.trim() !== "" ? session.friendName + " จ่ายก่อน" : "เพื่อนจ่ายก่อน";
+                    payerColor = "text-earth-green bg-earth-green/10 border-earth-green/20";
+                }
+                const card = document.createElement("div");
+                card.className = "bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border-0 shadow-sm transition-colors active:scale-[0.98]";
+                card.onclick = () => openModal(session.id);
+                card.innerHTML = '<div class="bg-[#F2EFCF] rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border-0/50 flex-none">' +
+                    '<span class="text-[11px] text-earth-muted leading-tight">' + dateObj.toLocaleDateString("th-TH",{month:"short"}) + '</span>' +
+                    '<span class="text-lg font-medium leading-none text-earth-text mt-0.5">' + dateObj.getDate() + '</span></div>' +
+                    '<div class="flex-1 min-w-0"><div class="flex justify-between items-start mb-1"><h4 class="font-medium text-earth-text truncate pr-2">ร้อง ' + (session.hours || "?") + ' ชม. (' + session.people + ' คน)</h4>' +
+                    '<span class="font-medium text-earth-text whitespace-nowrap">฿' + Number(session.myShare).toLocaleString() + '</span></div>' +
+                    '<div class="flex items-center gap-2 mt-1"><span class="text-[10px] px-2 py-0.5 rounded-md border ' + payerColor + ' truncate max-w-[150px]">' +
+                    payerBadge + '</span><span class="text-xs text-earth-muted whitespace-nowrap">รวม ฿' + Number(session.totalCost).toLocaleString() + '</span></div></div>' +
+                    '<i data-lucide="chevron-right" class="w-5 h-5 text-earth-muted/50 flex-none"></i>';
+                historyList.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // --- Song List: independent LocalStorage ---
+        const SONG_STORAGE_KEY = "karaoke_playlists";
+        let songData = loadSongData();
+        let activeLibraryView = "all";
+        let activePlaylistId = null;
+        let editingPlaylistId = null;
+        let artistSortMode = "";
+        const artistSortDirections = {en:true,th:true};
+        let selectedSongIds = new Set();
+        let draggedPlaylistId = null;
+
+        function loadSongData() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(SONG_STORAGE_KEY) || "null");
+                if (Array.isArray(saved)) return {songs:[], playlists:[], playlistOrder:[]};
+                return {
+                    songs: Array.isArray(saved && saved.songs) ? saved.songs : [],
+                    playlists: Array.isArray(saved && saved.playlists) ? saved.playlists : [],
+                    playlistOrder: Array.isArray(saved && saved.playlistOrder) ? saved.playlistOrder : []
+                };
+            } catch (error) {
+                return {songs:[], playlists:[], playlistOrder:[]};
+            }
+        }
+
+        function saveSongData() {
+            localStorage.setItem(SONG_STORAGE_KEY, JSON.stringify(songData));
+        }
+
+        function openSongLibrary() {
+            document.querySelector("body > div.min-h-screen").classList.add("hidden");
+            document.getElementById("song-library-view").classList.remove("hidden");
+            activeLibraryView = "all";
+            activePlaylistId = null;
+            renderSongLibrary();
+            lucide.createIcons();
+            window.scrollTo(0,0);
+        }
+
+        function closeSongLibrary() {
+            document.getElementById("song-library-view").classList.add("hidden");
+            document.querySelector("body > div.min-h-screen").classList.remove("hidden");
+            window.scrollTo(0,0);
+        }
+
+        function showAllSongs() {
+            activeLibraryView = "all";
+            activePlaylistId = null;
+            renderSongLibrary();
+        }
+
+        function getOrderedPlaylists() {
+            const map = new Map(songData.playlists.map(p => [p.id,p]));
+            const order = songData.playlistOrder.filter(id => map.has(id));
+            songData.playlists.forEach(p => { if (!order.includes(p.id)) order.unshift(p.id); });
+            songData.playlistOrder = order;
+            return order.map(id => map.get(id)).filter(Boolean);
+        }
+
+        function renderPlaylistNavigation() {
+            const container = document.getElementById("playlist-list");
+            container.innerHTML = "";
+            const playlists = getOrderedPlaylists();
+            if (!window.__playlistPointerReorderBound) {
+                document.addEventListener("pointerup", event => {
+                    if (!draggedPlaylistId) return;
+                    const target = document.elementFromPoint(event.clientX,event.clientY);
+                    const targetRow = target && target.closest("[data-playlist-id]");
+                    const sourceId = draggedPlaylistId;
+                    draggedPlaylistId = null;
+                    if (!targetRow || targetRow.dataset.playlistId === sourceId) return;
+                    const order = getOrderedPlaylists().map(p => p.id);
+                    const from = order.indexOf(sourceId);
+                    const to = order.indexOf(targetRow.dataset.playlistId);
+                    if (from < 0 || to < 0) return;
+                    order.splice(from,1);
+                    order.splice(to,0,sourceId);
+                    songData.playlistOrder = order;
+                    saveSongData();
+                    renderPlaylistNavigation();
+                });
+                window.__playlistPointerReorderBound = true;
+            }
+            document.getElementById("playlist-count").textContent = playlists.length;
+            playlists.forEach(playlist => {
+                const row = document.createElement("button");
+                row.type = "button";
+                row.className = "playlist-row" + (activePlaylistId === playlist.id ? " active" : "");
+                row.draggable = true;
+                row.dataset.playlistId = playlist.id;
+                row.innerHTML = '<span class="text-earth-muted">⠿</span><span class="flex-1 truncate">♫ ' + escapeSongText(playlist.name) + '</span><span class="text-[11px]">' + playlist.songIds.length + '</span>';
+                row.onclick = () => { activeLibraryView = "playlist"; activePlaylistId = playlist.id; renderSongLibrary(); };
+                row.addEventListener("dragstart", event => {
+                    draggedPlaylistId = playlist.id;
+                    row.classList.add("dragging");
+                    event.dataTransfer.effectAllowed = "move";
+                });
+                row.addEventListener("dragend", () => row.classList.remove("dragging"));
+                row.addEventListener("pointerdown", () => { draggedPlaylistId = playlist.id; });
+                row.addEventListener("dragover", event => event.preventDefault());
+                row.addEventListener("drop", event => {
+                    event.preventDefault();
+                    const targetId = playlist.id;
+                    if (!draggedPlaylistId || draggedPlaylistId === targetId) return;
+                    const order = getOrderedPlaylists().map(p => p.id);
+                    const from = order.indexOf(draggedPlaylistId);
+                    const to = order.indexOf(targetId);
+                    order.splice(from,1);
+                    order.splice(to,0,draggedPlaylistId);
+                    songData.playlistOrder = order;
+                    saveSongData();
+                    renderPlaylistNavigation();
+                });
+                container.appendChild(row);
+            });
+            document.getElementById("all-songs-nav").classList.toggle("active", activeLibraryView === "all");
+        }
+
+        function renderSongLibrary() {
+            renderPlaylistNavigation();
+            const isPlaylist = activeLibraryView === "playlist";
+            const playlist = isPlaylist ? songData.playlists.find(p => p.id === activePlaylistId) : null;
+            if (isPlaylist && !playlist) { showAllSongs(); return; }
+            document.getElementById("library-heading").textContent = isPlaylist ? playlist.name : "เพลงทั้งหมด";
+            document.getElementById("library-subheading").textContent = isPlaylist ? "เพลงใน Playlist นี้" : "เพลงทั้งหมดที่เพิ่มไว้ในคลัง";
+            document.getElementById("all-songs-count").textContent = songData.songs.length;
+            document.getElementById("playlist-actions").classList.toggle("hidden", !isPlaylist);
+            document.getElementById("playlist-actions").classList.toggle("flex", isPlaylist);
+            document.getElementById("playlist-song-count").textContent = playlist ? playlist.songIds.length + " เพลง" : "";
+            document.getElementById("sort-artist-en").classList.toggle("active", artistSortMode === "en");
+            document.getElementById("sort-artist-th").classList.toggle("active", artistSortMode === "th");
+            document.getElementById("sort-artist-en").textContent = artistSortDirections.en ? "A → Z" : "Z → A";
+            document.getElementById("sort-artist-th").textContent = artistSortDirections.th ? "ก → ฮ" : "ฮ → ก";
+            const search = (document.getElementById("song-search").value || "").trim().toLocaleLowerCase();
+            let songs = isPlaylist ? songData.songs.filter(s => playlist.songIds.includes(s.id)) : [...songData.songs];
+            songs = songs.filter(s => (s.title + " " + s.artist).toLocaleLowerCase().includes(search));
+            if (artistSortMode) {
+                songs.sort((a,b) => {
+                    const result = a.artist.localeCompare(b.artist, artistSortMode === "th" ? "th" : "en", {sensitivity:"base"});
+                    return artistSortDirections[artistSortMode] ? result : -result;
+                });
+            } else {
+                songs.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+            }
+            const list = document.getElementById("song-list");
+            const empty = document.getElementById("song-empty-state");
+            list.innerHTML = "";
+            empty.classList.toggle("hidden", songs.length !== 0);
+            if (!songs.length) {
+                document.getElementById("song-empty-message").textContent = isPlaylist ? "ยังไม่มีเพลงใน Playlist นี้" : "ยังไม่มีเพลงในคลัง";
+            }
+            songs.forEach(song => {
+                const row = document.createElement("div");
+                row.className = "song-row";
+                const source = song.url ? '<a class="song-open text-xs" href="' + escapeSongAttribute(song.url) + '" target="_blank" rel="noopener noreferrer">เปิดต้นทาง ↗</a>' : "";
+                const remove = isPlaylist ? '<button class="song-action" data-remove-song="' + song.id + '">นำออก</button>' : '<button class="song-action" data-delete-song="' + song.id + '">ลบ</button>';
+                row.innerHTML = '<div class="w-10 h-10 rounded-xl bg-[#F2EFCF] text-earth-accent flex items-center justify-center flex-none">♫</div><div class="min-w-0 flex-1"><p class="text-sm font-medium text-earth-text truncate">' + escapeSongText(song.title) + '</p><p class="text-xs text-earth-muted truncate">' + escapeSongText(song.artist) + '</p><div class="mt-1">' + source + '</div></div><div class="flex items-center gap-1">' + remove + '</div>';
+                list.appendChild(row);
+            });
+            list.querySelectorAll("[data-remove-song]").forEach(button => button.addEventListener("click", () => removeSongFromPlaylist(button.dataset.removeSong)));
+            list.querySelectorAll("[data-delete-song]").forEach(button => button.addEventListener("click", () => deleteSongFromLibrary(button.dataset.deleteSong)));
+            lucide.createIcons();
+        }
+
+        function sortArtists(language) {
+            if (artistSortMode === language) artistSortDirections[language] = !artistSortDirections[language];
+            else artistSortDirections[language] = true;
+            artistSortMode = language;
+            document.getElementById("sort-artist-en").textContent = artistSortDirections.en ? "A → Z" : "Z → A";
+            document.getElementById("sort-artist-th").textContent = artistSortDirections.th ? "ก → ฮ" : "ฮ → ก";
+            renderSongLibrary();
+        }
+
+        function escapeSongText(value) {
+            return String(value || "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+        }
+        function escapeSongAttribute(value) { return escapeSongText(value); }
+        function normalizeSongText(value) { return String(value || "").toLocaleLowerCase().replace(/\s+/g," ").trim(); }
+        function canonicalSongUrl(value) {
+            if (!value) return "";
+            try {
+                const parsed = new URL(value);
+                const host = parsed.hostname.toLowerCase().replace(/^www\./,"");
+                if (host === "youtu.be" || host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")) {
+                    const videoId = parsed.searchParams.get("v") ||
+                        (parsed.pathname.match(/\/(?:shorts|embed|live)\/([^/?]+)/) || [])[1] ||
+                        parsed.pathname.split("/").filter(Boolean).pop();
+                    return videoId ? "youtube:" + videoId : host + parsed.pathname;
+                }
+                if (host === "open.spotify.com") {
+                    const match = parsed.pathname.match(/\/(track|episode|album|playlist)\/([^/?]+)/);
+                    return match ? "spotify:" + match[1] + ":" + match[2] : "spotify:" + parsed.pathname;
+                }
+                parsed.hash = "";
+                ["si","utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(key => parsed.searchParams.delete(key));
+                parsed.searchParams.sort();
+                return host + parsed.pathname.replace(/\/$/,"") + (parsed.search ? parsed.search : "");
+            } catch (error) {
+                return normalizeSongText(value);
+            }
+        }
+
+        function openSongForm() {
+            document.getElementById("song-title").value = "";
+            document.getElementById("song-artist").value = "";
+            document.getElementById("song-url").value = "";
+            document.getElementById("metadata-status").textContent = "ระบบจะพยายามอ่านชื่อเพลงและศิลปิน หากไม่สำเร็จกรอกเองได้";
+            document.getElementById("song-form-modal").classList.add("modal-visible");
+        }
+        function closeSongForm() { document.getElementById("song-form-modal").classList.remove("modal-visible"); }
+
+        async function fetchSongMetadata() {
+            const url = document.getElementById("song-url").value.trim();
+            const status = document.getElementById("metadata-status");
+            if (!url) { status.textContent = "กรุณาวาง URL ก่อน"; return; }
+            try {
+                new URL(url);
+            } catch (error) { status.textContent = "URL ไม่ถูกต้อง"; return; }
+            status.textContent = "กำลังพยายามดึงข้อมูล...";
+            const providers = [
+                "https://noembed.com/embed?url=" + encodeURIComponent(url),
+                "https://open.spotify.com/oembed?url=" + encodeURIComponent(url)
+            ];
+            for (const endpoint of providers) {
+                try {
+                    const response = await fetch(endpoint);
+                    if (!response.ok) continue;
+                    const data = await response.json();
+                    if (data.title) document.getElementById("song-title").value = data.title;
+                    if (data.author_name) document.getElementById("song-artist").value = data.author_name;
+                    if (data.title) { status.textContent = "ดึงข้อมูลได้แล้ว กรุณาตรวจสอบชื่อเพลงและศิลปินก่อนยืนยัน"; return; }
+                } catch (error) { /* ผู้ใช้กรอกเองได้เมื่อแพลตฟอร์มไม่อนุญาต */ }
+            }
+            status.textContent = "แพลตฟอร์มไม่อนุญาตให้ดึงข้อมูลอัตโนมัติ กรุณากรอกชื่อเพลงและศิลปินเอง";
+        }
+
+        function saveSong() {
+            const title = document.getElementById("song-title").value.trim();
+            const artist = document.getElementById("song-artist").value.trim();
+            const url = document.getElementById("song-url").value.trim();
+            if (!title || !artist) { alert("กรุณากรอกชื่อเพลงและศิลปิน"); return; }
+            const duplicate = songData.songs.find(song =>
+                (url && song.url && canonicalSongUrl(url) === canonicalSongUrl(song.url)) ||
+                (normalizeSongText(song.title) === normalizeSongText(title) && normalizeSongText(song.artist) === normalizeSongText(artist))
+            );
+            if (duplicate) {
+                const addToPlaylist = confirm("เพลงนี้มีอยู่ใน All Songs แล้ว ต้องการใช้เพลงเดิมแทนการสร้างรายการซ้ำหรือไม่?");
+                if (addToPlaylist) {
+                    if (activePlaylistId) {
+                        const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+                        if (playlist && !playlist.songIds.includes(duplicate.id)) playlist.songIds.push(duplicate.id);
+                    } else if (songData.playlists.length) {
+                        const choices = getOrderedPlaylists();
+                        const choiceText = choices.map((p,i) => (i + 1) + ". " + p.name).join("\n");
+                        const picked = prompt("เลือก Playlist ที่ต้องการเพิ่มเพลงเดิม:\n" + choiceText + "\nกรอกหมายเลข หรือกดยกเลิก");
+                        const selected = choices[Number(picked) - 1];
+                        if (selected && !selected.songIds.includes(duplicate.id)) selected.songIds.push(duplicate.id);
+                    }
+                    saveSongData();
+                    renderSongLibrary();
+                }
+                closeSongForm();
+                return;
+            }
+            songData.songs.push({id:Date.now().toString(),title,artist,url,createdAt:Date.now()});
+            saveSongData();
+            closeSongForm();
+            renderSongLibrary();
+        }
+
+        function openPlaylistForm(mode) {
+            editingPlaylistId = mode === "rename" ? activePlaylistId : null;
+            const playlist = editingPlaylistId ? songData.playlists.find(p => p.id === editingPlaylistId) : null;
+            document.getElementById("playlist-form-title").textContent = playlist ? "เปลี่ยนชื่อ Playlist" : "สร้าง Playlist";
+            document.getElementById("playlist-name").value = playlist ? playlist.name : "";
+            document.getElementById("playlist-form-modal").classList.add("modal-visible");
+            setTimeout(() => document.getElementById("playlist-name").focus(), 50);
+        }
+        function closePlaylistForm() { document.getElementById("playlist-form-modal").classList.remove("modal-visible"); }
+
+        function savePlaylist() {
+            const name = document.getElementById("playlist-name").value.trim();
+            if (!name) { alert("กรุณาตั้งชื่อ Playlist"); return; }
+            if (editingPlaylistId) {
+                const playlist = songData.playlists.find(p => p.id === editingPlaylistId);
+                if (playlist) playlist.name = name;
+            } else {
+                const playlist = {id:Date.now().toString(),name,songIds:[],createdAt:Date.now()};
+                songData.playlists.push(playlist);
+                songData.playlistOrder.unshift(playlist.id);
+                activeLibraryView = "playlist";
+                activePlaylistId = playlist.id;
+            }
+            saveSongData();
+            closePlaylistForm();
+            renderSongLibrary();
+        }
+
+        function deleteCurrentPlaylist() {
+            const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+            if (!playlist || !confirm('ต้องการลบ Playlist "' + playlist.name + '" ใช่หรือไม่? เพลงใน All Songs จะยังคงอยู่')) return;
+            songData.playlists = songData.playlists.filter(p => p.id !== activePlaylistId);
+            songData.playlistOrder = songData.playlistOrder.filter(id => id !== activePlaylistId);
+            activePlaylistId = null;
+            activeLibraryView = "all";
+            saveSongData();
+            renderSongLibrary();
+        }
+
+        function deleteSongFromLibrary(songId) {
+            const song = songData.songs.find(s => s.id === songId);
+            if (!song || !confirm('ลบ "' + song.title + '" จาก All Songs และทุก Playlist ใช่หรือไม่?')) return;
+            songData.songs = songData.songs.filter(s => s.id !== songId);
+            songData.playlists.forEach(p => p.songIds = p.songIds.filter(id => id !== songId));
+            saveSongData();
+            renderSongLibrary();
+        }
+
+        function removeSongFromPlaylist(songId) {
+            const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+            if (!playlist) return;
+            playlist.songIds = playlist.songIds.filter(id => id !== songId);
+            saveSongData();
+            renderSongLibrary();
+        }
+
+        function openAddSongsToPlaylist() {
+            if (!activePlaylistId) return;
+            selectedSongIds = new Set();
+            document.getElementById("add-songs-search").value = "";
+            renderAddSongsChoices();
+            document.getElementById("add-songs-modal").classList.add("modal-visible");
+        }
+        function closeAddSongsModal() { document.getElementById("add-songs-modal").classList.remove("modal-visible"); }
+
+        function renderAddSongsChoices() {
+            const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+            const container = document.getElementById("add-songs-choices");
+            if (!playlist) { container.innerHTML = ""; return; }
+            const query = document.getElementById("add-songs-search").value.trim().toLocaleLowerCase();
+            const available = songData.songs.filter(s => !playlist.songIds.includes(s.id) && (s.title + " " + s.artist).toLocaleLowerCase().includes(query));
+            container.innerHTML = "";
+            if (!available.length) { container.innerHTML = '<p class="text-sm text-earth-muted text-center py-8">ไม่มีเพลงที่เลือกได้</p>'; return; }
+            available.forEach(song => {
+                const label = document.createElement("label");
+                label.className = "flex items-center gap-3 py-3 cursor-pointer";
+                label.innerHTML = '<input type="checkbox" class="w-4 h-4 accent-[#788B3F]" value="' + song.id + '"' + (selectedSongIds.has(song.id) ? " checked" : "") + '><span class="min-w-0"><span class="block text-sm text-earth-text">' + escapeSongText(song.title) + '</span><span class="block text-xs text-earth-muted">' + escapeSongText(song.artist) + '</span></span>';
+                label.querySelector("input").addEventListener("change", event => {
+                    if (event.target.checked) selectedSongIds.add(song.id);
+                    else selectedSongIds.delete(song.id);
+                });
+                container.appendChild(label);
+            });
+        }
+
+        function confirmAddSongsToPlaylist() {
+            const playlist = songData.playlists.find(p => p.id === activePlaylistId);
+            if (!playlist) return;
+            selectedSongIds.forEach(id => { if (!playlist.songIds.includes(id)) playlist.songIds.push(id); });
+            saveSongData();
+            closeAddSongsModal();
+            renderSongLibrary();
+        }
+
+        // --- Initialization overrides: keep existing karaoke_sessions logic intact ---
+        function initApp() {
+            summaryYear = new Date().getFullYear();
+            const monthPicker = document.getElementById("summary-month-picker");
+            monthPicker.value = localYearMonth();
+            monthPicker.addEventListener("change", renderSummary);
+            const historyPicker = document.getElementById("history-month-picker");
+            historyPicker.value = localYearMonth();
+            historyMonthValue = historyPicker.value;
+            historyPicker.addEventListener("change", () => { historyMonthValue = historyPicker.value; renderHistory(); });
+            renderDashboard();
+            renderHistory();
+            renderPlaylistNavigation();
+            document.getElementById("history-sort-day").classList.add("active");
+            document.getElementById("history-sort-day").textContent = "วัน ↓";
+            document.getElementById("history-sort-month").classList.remove("active");
+            document.getElementById("history-sort-price").classList.remove("active");
         }
 
         // Run on load
