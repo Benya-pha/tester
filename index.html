@@ -145,12 +145,15 @@
                             <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
                         </div>
                         <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                            <div class="inline-flex items-center gap-2 rounded-full bg-white/45 border border-white/50 px-3 py-2 text-sm text-earth-text">
+                            <div id="summary-year-controls" class="inline-flex items-center gap-2 rounded-full bg-white/45 border border-white/50 px-3 py-2 text-sm text-earth-text">
                                 <button id="summary-prev" onclick="shiftSummary(-1)" aria-label="ก่อนหน้า" class="px-1 text-earth-text/75 hover:text-earth-text">‹</button>
                                 <span id="current-year-display">ปี 2026</span>
                                 <button id="summary-next" onclick="shiftSummary(1)" aria-label="ถัดไป" class="px-1 text-earth-text/75 hover:text-earth-text">›</button>
                             </div>
-                            <input id="summary-month-picker" type="month" class="hidden rounded-xl border border-white/60 bg-white/95 text-earth-text px-3 py-2 text-sm focus:outline-none" />
+                            <label id="summary-month-control" class="hidden relative rounded-xl border border-white/60 bg-white/95 text-earth-text px-4 py-3 text-sm font-medium min-w-[190px] text-center">
+                                <span id="summary-month-label">November 2026</span>
+                                <input id="summary-month-picker" type="month" lang="en-US" aria-label="เลือกเดือนและปี" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                            </label>
                         </div>
                     </div>
                 </section>
@@ -773,10 +776,8 @@
             document.getElementById("month-summary-tab").classList.toggle("bg-white", mode === "month");
             document.getElementById("month-summary-tab").classList.toggle("text-earth-accent", mode === "month");
             document.getElementById("month-summary-tab").classList.toggle("text-white/80", mode !== "month");
-            document.getElementById("summary-month-picker").classList.toggle("hidden", mode !== "month");
-            document.getElementById("summary-prev").classList.toggle("hidden", mode === "month");
-            document.getElementById("summary-next").classList.toggle("hidden", mode === "month");
-            document.getElementById("current-year-display").classList.toggle("hidden", mode === "month");
+            document.getElementById("summary-year-controls").classList.toggle("hidden", mode === "month");
+            document.getElementById("summary-month-control").classList.toggle("hidden", mode !== "month");
             renderSummary();
         }
 
@@ -807,7 +808,10 @@
                 const month = Number(parts[1]) - 1;
                 summaryYear = year;
                 summaryMonth = month;
-                caption.textContent = "ยอดเปย์คาราโอเกะเดือน " + new Date(year, month, 1).toLocaleDateString("th-TH", {month:"long", year:"numeric"});
+                const monthDate = new Date(year, month, 1);
+                const monthLabel = new Intl.DateTimeFormat("en-US", {month:"long", year:"numeric"}).format(monthDate);
+                document.getElementById("summary-month-label").textContent = monthLabel;
+                caption.textContent = "คาราโอเกะเดือน " + monthLabel + " (ส่วนของคุณ)";
                 total = sessions.filter(s => s.date && s.date.startsWith(selected))
                     .reduce((sum, s) => sum + (Number(s.myShare) || 0), 0);
             }
