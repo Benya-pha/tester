@@ -336,10 +336,10 @@
                         </div>
                         <div id="playlist-actions" class="hidden items-center justify-between gap-2 mb-4">
                             <span class="text-xs text-earth-muted" id="playlist-song-count"></span>
-                            <div class="flex gap-2">
+                            <div class="flex items-center gap-3">
                                 <button onclick="openAddSongsToPlaylist()" class="rounded-xl bg-earth-accent text-white px-3 py-2 text-xs">เพิ่มเพลงจากคลัง</button>
-                                <button onclick="openPlaylistForm('rename')" class="rounded-xl border-0 px-3 py-2 text-xs text-earth-text">เปลี่ยนชื่อ</button>
-                                <button onclick="deleteCurrentPlaylist()" class="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">ลบ Playlist</button>
+                                <button onclick="openPlaylistForm('rename')" aria-label="เปลี่ยนชื่อ Playlist" title="เปลี่ยนชื่อ Playlist" class="inline-flex items-center gap-1.5 rounded-lg px-2 py-2 text-xs text-earth-muted hover:text-earth-text hover:bg-earth-bg transition-colors">เปลี่ยนชื่อ <i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+                                <button onclick="deleteCurrentPlaylist()" aria-label="ลบ Playlist" title="ลบ Playlist" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                         </div>
                         <div id="song-list" class="divide-y divide-earth-bg"></div>
