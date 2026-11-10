@@ -120,17 +120,17 @@
                         <h1 class="text-2xl sm:text-3xl font-semibold tracking-tight text-earth-text">PayKaraoke<span class="text-earth-accent">.</span></h1>
                     </div>
                 </div>
-                <div class="hidden sm:flex items-center gap-2 rounded-full border border-earth-border bg-earth-card px-4 py-2 text-xs text-earth-muted">
+                <div class="hidden sm:flex items-center gap-2 rounded-full border-0 bg-earth-card px-4 py-2 text-xs text-earth-muted">
                     <span class="w-2 h-2 rounded-full bg-earth-green"></span>
                     Personal tracker
                 </div>
-                <button type="button" onclick="openSongLibrary()" aria-label="Song List" class="w-11 h-11 rounded-full border border-earth-border bg-earth-card flex items-center justify-center text-earth-accent hover:bg-[#F2EFCF] transition-colors">
+                <button type="button" onclick="openSongLibrary()" aria-label="Song List" class="w-11 h-11 rounded-full border-0 bg-earth-card flex items-center justify-center text-earth-accent hover:bg-[#F2EFCF] transition-colors">
                     <i data-lucide="music-2" class="w-5 h-5"></i>
                 </button>
             </header>
 
             <main class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-5 lg:gap-7 pb-10">
-                <section class="rounded-[2rem] bg-earth-yellow text-earth-text p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-yellow/25 border border-[#E9D978]">
+                <section class="rounded-[2rem] bg-earth-yellow text-earth-text p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-lg shadow-earth-yellow/20 border-0">
                     <div class="relative z-10">
                         <div class="flex items-center justify-between gap-3">
                             <span class="text-[11px] tracking-[0.2em] uppercase text-earth-text/70 font-medium">Karaoke spending</span>
@@ -145,12 +145,12 @@
                             <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
                         </div>
                         <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                            <div id="summary-year-controls" class="inline-flex items-center gap-2 rounded-full bg-white/45 border border-white/50 px-3 py-2 text-sm text-earth-text">
+                            <div id="summary-year-controls" class="inline-flex items-center gap-2 rounded-full bg-white/45 border-0 px-3 py-2 text-sm text-earth-text">
                                 <button id="summary-prev" onclick="shiftSummary(-1)" aria-label="ก่อนหน้า" class="px-1 text-earth-text/75 hover:text-earth-text">‹</button>
                                 <span id="current-year-display">ปี 2026</span>
                                 <button id="summary-next" onclick="shiftSummary(1)" aria-label="ถัดไป" class="px-1 text-earth-text/75 hover:text-earth-text">›</button>
                             </div>
-                            <label id="summary-month-control" class="hidden relative rounded-xl border border-white/60 bg-white/95 text-earth-text px-4 py-3 text-sm font-medium min-w-[190px] text-center">
+                            <label id="summary-month-control" class="hidden relative rounded-xl border-0 bg-white/95 text-earth-text px-4 py-3 text-sm font-medium min-w-[190px] text-center">
                                 <span id="summary-month-label">November 2026</span>
                                 <input id="summary-month-picker" type="month" lang="en-US" aria-label="เลือกเดือนและปี" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
                             </label>
@@ -158,7 +158,7 @@
                     </div>
                 </section>
 
-                <section class="rounded-[2rem] bg-earth-card border border-earth-border p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+                <section class="rounded-[2rem] bg-[#FFFDF4] p-6 sm:p-8 shadow-sm flex flex-col justify-between">
                     <div>
                         <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Make a memory</p>
                         <h2 class="mt-3 text-2xl sm:text-3xl font-semibold leading-snug text-earth-text">คืนนี้มีนัด<br class="hidden sm:block"/>ร้องเพลงหรือยัง?</h2>
@@ -172,7 +172,7 @@
                     </div>
                 </section>
 
-                <section class="lg:col-span-2 rounded-[2rem] bg-earth-card border border-earth-border p-5 sm:p-7 shadow-sm">
+                <section class="lg:col-span-2 rounded-[2rem] bg-[#E7EBCB] p-5 sm:p-7 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
                         <div>
                             <p class="text-[11px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Your karaoke diary</p>
@@ -180,7 +180,7 @@
                             <p class="text-sm text-earth-muted mt-1">ทุกครั้งที่ออกไปร้อง มีเรื่องราวและค่าใช้จ่ายให้จดจำ</p>
                         </div>
                         <div class="flex items-center gap-2 self-start sm:self-auto">
-                            <span class="text-xs text-earth-muted bg-[#F2EFCF] border border-earth-border px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
+                            <span class="text-xs text-earth-muted bg-[#F2EFCF] border-0 px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
                             <button onclick="exportToExcel()" class="text-xs bg-earth-green/10 text-earth-green hover:bg-earth-green/20 px-3 py-2 rounded-xl flex items-center gap-2 transition-colors border border-earth-green/20 font-medium">
                                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel
                             </button>
@@ -190,7 +190,7 @@
                         <button id="history-sort-day" onclick="setHistorySort('day')" class="history-sort-button active">วัน ↓</button>
                         <button id="history-sort-month" onclick="setHistorySort('month')" class="history-sort-button">เดือน</button>
                         <button id="history-sort-price" onclick="setHistorySort('price')" class="history-sort-button">ราคา ↓</button>
-                        <input id="history-month-picker" type="month" class="hidden rounded-xl border border-earth-border bg-white px-3 py-2 text-sm text-earth-text" />
+                        <input id="history-month-picker" type="month" class="hidden rounded-xl border-0 bg-white px-3 py-2 text-sm text-earth-text" />
                     </div>
                     <div id="history-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 pb-2">
                         <!-- รายการจะถูกสร้างด้วย JavaScript -->
@@ -207,12 +207,12 @@
             <div class="w-full flex justify-center pt-4 pb-2 flex-none cursor-pointer sm:hidden" onclick="closeModal()">
                 <div class="w-12 h-1.5 bg-earth-border rounded-full"></div>
             </div>
-            <div class="px-6 sm:px-8 py-5 flex justify-between items-center flex-none border-b border-earth-border">
+            <div class="px-6 sm:px-8 py-5 flex justify-between items-center flex-none border-b-0">
                 <div>
                     <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Session details</p>
                     <h2 class="text-xl sm:text-2xl font-semibold text-earth-text mt-1" id="modal-title">เพิ่มประวัติการร้อง</h2>
                 </div>
-                <button type="button" onclick="closeModal()" class="p-2.5 bg-earth-card border border-earth-border rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
+                <button type="button" onclick="closeModal()" class="p-2.5 bg-earth-card border-0 rounded-full text-earth-muted hover:text-earth-text active:scale-95 transition-transform">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -221,20 +221,20 @@
                     <input type="hidden" id="entry-id">
                     <div>
                         <label class="block text-sm font-medium text-earth-muted mb-2">วันที่ไปร้อง</label>
-                        <input type="date" id="entry-date" required class="w-full bg-earth-card border border-earth-border rounded-xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors appearance-none">
+                        <input type="date" id="entry-date" required class="w-full bg-earth-card border-0 rounded-xl px-4 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors appearance-none">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนชั่วโมง</label>
                             <div class="relative">
-                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
+                                <input type="number" id="entry-hours" min="0.5" step="0.5" placeholder="เช่น 2" oninput="autoCalculateTotal()" class="w-full bg-earth-card border-0 rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">ชม.</span>
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2">จำนวนคน</label>
                             <div class="relative">
-                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border border-earth-border rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
+                                <input type="number" id="entry-people" min="1" step="1" required placeholder="เช่น 4" oninput="autoCalculateTotal()" class="w-full bg-earth-card border-0 rounded-xl pl-4 pr-10 py-3 text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 transition-colors">
                                 <span class="absolute right-4 top-3.5 text-earth-muted text-sm">คน</span>
                             </div>
                         </div>
@@ -245,11 +245,11 @@
                         <div class="grid grid-cols-2 gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="ฉันจ่าย" class="peer sr-only" checked onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-[#F2EFCF] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
+                                <div class="text-center text-sm bg-earth-card border-0 rounded-xl py-3.5 peer-checked:bg-[#F2EFCF] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="เพื่อนจ่าย" class="peer sr-only" onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">เพื่อนจ่ายก่อน 🫂</div>
+                                <div class="text-center text-sm bg-earth-card border-0 rounded-xl py-3.5 peer-checked:bg-earth-green/10 peer-checked:border-earth-green peer-checked:text-earth-green transition-colors">เพื่อนจ่ายก่อน 🫂</div>
                             </label>
                         </div>
                         <div id="friend-name-container" class="hidden mt-3">
@@ -257,17 +257,17 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i data-lucide="user" class="h-4 w-4 text-earth-muted"></i>
                                 </div>
-                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border border-earth-border rounded-xl pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green/20 transition-colors">
+                                <input type="text" id="entry-friend-name" placeholder="ระบุชื่อคนจ่าย (ไม่บังคับ)" class="w-full bg-earth-card border-0 rounded-xl pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-green focus:ring-1 focus:ring-earth-green/20 transition-colors">
                             </div>
                         </div>
                     </div>
-                    <div class="bg-earth-card p-5 sm:p-6 rounded-2xl border border-earth-border space-y-4">
+                    <div class="bg-[#FFFDF4] p-5 sm:p-6 rounded-2xl space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-earth-muted mb-2 flex justify-between">
                                 <span>ค่าใช้จ่ายรวม (บาท)</span>
                                 <span class="text-[10px] text-earth-muted font-normal">*แก้ไขได้ถ้ามีค่าอาหาร</span>
                             </label>
-                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#FFFBE8] border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
+                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#FFFBE8] border-0 rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-earth-accent mb-2 flex justify-between"><span>ส่วนที่ฉันต้องจ่าย (บาท)</span></label>
@@ -276,7 +276,7 @@
                     </div>
                     <div class="h-2"></div>
                 </div>
-                <div class="px-6 sm:px-8 py-4 bg-[#FFFBEA] border-t border-earth-border flex gap-3 flex-none pb-7 sm:pb-5">
+                <div class="px-6 sm:px-8 py-4 bg-[#FFFBEA] border-t-0 flex gap-3 flex-none pb-7 sm:pb-5">
                     <button type="button" id="btn-delete" onclick="deleteCurrentEntry()" class="hidden flex-none bg-[#FBE9E8] text-[#B94A48] border border-[#B94A48]/20 hover:bg-[#F6DAD8] px-4 rounded-xl font-medium transition-colors active:scale-95">
                         <i data-lucide="trash-2" class="w-5 h-5"></i>
                     </button>
@@ -290,7 +290,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <header class="flex items-center justify-between gap-3 mb-7">
                 <div class="flex items-center gap-3">
-                    <button onclick="closeSongLibrary()" class="w-10 h-10 rounded-full border border-earth-border bg-earth-card text-earth-accent flex items-center justify-center" aria-label="กลับ">
+                    <button onclick="closeSongLibrary()" class="w-10 h-10 rounded-full border-0 bg-earth-card text-earth-accent flex items-center justify-center" aria-label="กลับ">
                         <i data-lucide="arrow-left" class="w-5 h-5"></i>
                     </button>
                     <div>
@@ -303,13 +303,13 @@
                 </button>
             </header>
             <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5">
-                <aside class="rounded-3xl border border-earth-border bg-earth-card p-4 h-fit">
+                <aside class="rounded-3xl bg-[#FFFDF4] p-4 h-fit">
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="font-semibold text-earth-text">คลังเพลง</h2>
                         <button onclick="openPlaylistForm()" class="w-8 h-8 rounded-full bg-[#F2EFCF] text-earth-accent flex items-center justify-center" title="สร้าง Playlist"><i data-lucide="plus" class="w-4 h-4"></i></button>
                     </div>
                     <button id="all-songs-nav" onclick="showAllSongs()" class="library-nav-item active w-full text-left">♫ เพลงทั้งหมด <span id="all-songs-count" class="float-right">0</span></button>
-                    <div class="border-t border-earth-border my-4"></div>
+                    <div class="border-t-0 my-4"></div>
                     <div class="flex items-center justify-between mb-2">
                         <h3 class="text-xs tracking-wide text-earth-muted uppercase">My Playlists</h3>
                         <span id="playlist-count" class="text-xs text-earth-muted">0</span>
@@ -318,7 +318,7 @@
                     <p class="text-[11px] text-earth-muted mt-3">ลาก Playlist เพื่อเปลี่ยนลำดับได้</p>
                 </aside>
                 <main class="min-w-0">
-                    <div class="rounded-3xl border border-earth-border bg-earth-card p-4 sm:p-6">
+                    <div class="rounded-3xl bg-[#FFFDF4] p-4 sm:p-6">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                             <div>
                                 <p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Music library</p>
@@ -332,17 +332,17 @@
                         </div>
                         <div class="relative mb-4">
                             <i data-lucide="search" class="w-4 h-4 text-earth-muted absolute left-3 top-1/2 -translate-y-1/2"></i>
-                            <input id="song-search" oninput="renderSongLibrary()" type="search" placeholder="ค้นหาชื่อเพลงหรือศิลปิน..." class="w-full rounded-xl border border-earth-border bg-[#FFFBE8] pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-accent">
+                            <input id="song-search" oninput="renderSongLibrary()" type="search" placeholder="ค้นหาชื่อเพลงหรือศิลปิน..." class="w-full rounded-xl bg-[#FFFBE8] pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-accent">
                         </div>
                         <div id="playlist-actions" class="hidden items-center justify-between gap-2 mb-4">
                             <span class="text-xs text-earth-muted" id="playlist-song-count"></span>
                             <div class="flex gap-2">
                                 <button onclick="openAddSongsToPlaylist()" class="rounded-xl bg-earth-accent text-white px-3 py-2 text-xs">เพิ่มเพลงจากคลัง</button>
-                                <button onclick="openPlaylistForm('rename')" class="rounded-xl border border-earth-border px-3 py-2 text-xs text-earth-text">เปลี่ยนชื่อ</button>
+                                <button onclick="openPlaylistForm('rename')" class="rounded-xl border-0 px-3 py-2 text-xs text-earth-text">เปลี่ยนชื่อ</button>
                                 <button onclick="deleteCurrentPlaylist()" class="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">ลบ Playlist</button>
                             </div>
                         </div>
-                        <div id="song-list" class="divide-y divide-earth-border"></div>
+                        <div id="song-list" class="divide-y divide-earth-bg"></div>
                         <div id="song-empty-state" class="hidden text-center py-12 text-earth-muted">
                             <div class="text-3xl mb-2">♫</div><p id="song-empty-message">ยังไม่มีเพลงในคลัง</p>
                         </div>
@@ -357,20 +357,20 @@
         <div class="relative w-full max-w-lg bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto">
             <div class="flex justify-between items-center mb-5">
                 <div><p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Add to library</p><h3 class="text-xl font-semibold text-earth-text">เพิ่มเพลง</h3></div>
-                <button onclick="closeSongForm()" class="w-9 h-9 rounded-full border border-earth-border text-earth-muted"><i data-lucide="x" class="w-4 h-4"></i></button>
+                <button onclick="closeSongForm()" class="w-9 h-9 rounded-full border-0 text-earth-muted"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <label class="block text-xs text-earth-muted mb-2">วาง URL เพลง (ไม่บังคับ)</label>
             <div class="flex gap-2 mb-2">
-                <input id="song-url" type="url" placeholder="YouTube / Spotify / Apple Music" class="min-w-0 flex-1 rounded-xl border border-earth-border bg-[#FFFBE8] px-3 py-3 text-sm">
+                <input id="song-url" type="url" placeholder="YouTube / Spotify / Apple Music" class="min-w-0 flex-1 rounded-xl bg-[#FFFBE8] px-3 py-3 text-sm">
                 <button id="fetch-song-metadata" onclick="fetchSongMetadata()" class="rounded-xl bg-[#F2EFCF] text-earth-accent px-3 text-xs font-medium">ดึงข้อมูล</button>
             </div>
             <p id="metadata-status" class="text-[11px] text-earth-muted mb-4">ระบบจะพยายามอ่านชื่อเพลงและศิลปิน หากไม่สำเร็จกรอกเองได้</p>
             <label class="block text-xs text-earth-muted mb-2">ชื่อเพลง</label>
-            <input id="song-title" type="text" placeholder="ชื่อเพลง" class="w-full rounded-xl border border-earth-border bg-white px-3 py-3 text-sm mb-3">
+            <input id="song-title" type="text" placeholder="ชื่อเพลง" class="w-full rounded-xl border-0 bg-white px-3 py-3 text-sm mb-3">
             <label class="block text-xs text-earth-muted mb-2">ศิลปิน</label>
-            <input id="song-artist" type="text" placeholder="ชื่อศิลปิน" class="w-full rounded-xl border border-earth-border bg-white px-3 py-3 text-sm mb-5">
+            <input id="song-artist" type="text" placeholder="ชื่อศิลปิน" class="w-full rounded-xl border-0 bg-white px-3 py-3 text-sm mb-5">
             <div class="flex gap-2">
-                <button onclick="closeSongForm()" class="flex-1 rounded-xl border border-earth-border py-3 text-sm">ยกเลิก</button>
+                <button onclick="closeSongForm()" class="flex-1 rounded-xl border-0 py-3 text-sm">ยกเลิก</button>
                 <button onclick="saveSong()" class="flex-1 rounded-xl bg-earth-accent text-white py-3 text-sm font-medium">Confirm</button>
             </div>
         </div>
@@ -380,8 +380,8 @@
         <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closePlaylistForm()"></div>
         <div class="relative w-full max-w-md bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
             <div class="flex justify-between items-center mb-4"><h3 id="playlist-form-title" class="text-xl font-semibold text-earth-text">สร้าง Playlist</h3><button onclick="closePlaylistForm()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
-            <input id="playlist-name" type="text" maxlength="50" placeholder="ชื่อ Playlist" class="w-full rounded-xl border border-earth-border px-4 py-3 mb-4">
-            <div class="flex gap-2"><button onclick="closePlaylistForm()" class="flex-1 rounded-xl border border-earth-border py-3">ยกเลิก</button><button onclick="savePlaylist()" class="flex-1 rounded-xl bg-earth-accent text-white py-3">บันทึก</button></div>
+            <input id="playlist-name" type="text" maxlength="50" placeholder="ชื่อ Playlist" class="w-full rounded-xl border-0 px-4 py-3 mb-4">
+            <div class="flex gap-2"><button onclick="closePlaylistForm()" class="flex-1 rounded-xl border-0 py-3">ยกเลิก</button><button onclick="savePlaylist()" class="flex-1 rounded-xl bg-earth-accent text-white py-3">บันทึก</button></div>
         </div>
     </div>
 
@@ -389,8 +389,8 @@
         <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closeAddSongsModal()"></div>
         <div class="relative w-full max-w-xl bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90dvh] flex flex-col">
             <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-semibold text-earth-text">เลือกเพลงจากคลัง</h3><button onclick="closeAddSongsModal()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
-            <input id="add-songs-search" oninput="renderAddSongsChoices()" placeholder="ค้นหาเพลงหรือศิลปิน..." class="w-full rounded-xl border border-earth-border px-3 py-3 text-sm mb-3">
-            <div id="add-songs-choices" class="overflow-y-auto flex-1 divide-y divide-earth-border"></div>
+            <input id="add-songs-search" oninput="renderAddSongsChoices()" placeholder="ค้นหาเพลงหรือศิลปิน..." class="w-full rounded-xl border-0 px-3 py-3 text-sm mb-3">
+            <div id="add-songs-choices" class="overflow-y-auto flex-1 divide-y divide-earth-bg"></div>
             <button onclick="confirmAddSongsToPlaylist()" class="w-full rounded-xl bg-earth-accent text-white py-3 mt-4">เพิ่มเพลงที่เลือก</button>
         </div>
     </div>
@@ -448,7 +448,7 @@
 
             if (sessions.length === 0) {
                 historyList.innerHTML = `
-                    <div class="text-center py-12 px-4 bg-earth-card border border-earth-border rounded-3xl shadow-sm">
+                    <div class="text-center py-12 px-4 bg-earth-card border-0 rounded-3xl shadow-sm">
                         <div class="bg-earth-bg w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                             <i data-lucide="mic-off" class="w-8 h-8 text-earth-muted"></i>
                         </div>
@@ -483,11 +483,11 @@
                 }
 
                 const card = document.createElement('div');
-                card.className = 'bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border border-earth-border shadow-sm transition-colors active:scale-[0.98]';
+                card.className = 'bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border-0 shadow-sm transition-colors active:scale-[0.98]';
                 card.onclick = () => openModal(session.id);
                 
                 card.innerHTML = `
-                    <div class="bg-earth-bg rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border border-earth-border/50 flex-none">
+                    <div class="bg-earth-bg rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border-0/50 flex-none">
                         <span class="text-[11px] text-earth-muted leading-tight">${dateObj.toLocaleDateString('th-TH', { month: 'short'})}</span>
                         <span class="text-lg font-medium leading-none text-earth-text mt-0.5">${dateObj.getDate()}</span>
                     </div>
@@ -856,7 +856,7 @@
                 return historyDayAscending ? diff : -diff;
             });
             if (visibleSessions.length === 0) {
-                historyList.innerHTML = '<div class="text-center py-12 px-4 bg-earth-card border border-earth-border rounded-3xl shadow-sm md:col-span-2"><p class="text-earth-text font-medium">' +
+                historyList.innerHTML = '<div class="text-center py-12 px-4 bg-earth-card border-0 rounded-3xl shadow-sm md:col-span-2"><p class="text-earth-text font-medium">' +
                     (sessions.length === 0 ? "ยังไม่มีประวัติการร้องเพลง" : "ไม่พบประวัติในช่วงเวลานี้") +
                     '</p><p class="text-earth-muted text-sm mt-1">ลองเปลี่ยนตัวกรองหรือเพิ่มประวัติใหม่</p></div>';
                 return;
@@ -873,9 +873,9 @@
                     payerColor = "text-earth-green bg-earth-green/10 border-earth-green/20";
                 }
                 const card = document.createElement("div");
-                card.className = "bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border border-earth-border shadow-sm transition-colors active:scale-[0.98]";
+                card.className = "bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border-0 shadow-sm transition-colors active:scale-[0.98]";
                 card.onclick = () => openModal(session.id);
-                card.innerHTML = '<div class="bg-[#F2EFCF] rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border border-earth-border/50 flex-none">' +
+                card.innerHTML = '<div class="bg-[#F2EFCF] rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border-0/50 flex-none">' +
                     '<span class="text-[11px] text-earth-muted leading-tight">' + dateObj.toLocaleDateString("th-TH",{month:"short"}) + '</span>' +
                     '<span class="text-lg font-medium leading-none text-earth-text mt-0.5">' + dateObj.getDate() + '</span></div>' +
                     '<div class="flex-1 min-w-0"><div class="flex justify-between items-start mb-1"><h4 class="font-medium text-earth-text truncate pr-2">ร้อง ' + (session.hours || "?") + ' ชม. (' + session.people + ' คน)</h4>' +
