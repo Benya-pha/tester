@@ -21,15 +21,15 @@
                     },
                     colors: {
                         earth: {
-                            bg: '#F7F3F0',
-                            card: '#FFFCFA',
-                            text: '#35232C',
-                            muted: '#8C7D83',
-                            accent: '#713449',
-                            accentHover: '#572638',
-                            green: '#87927D',
-                            yellow: '#C3A36B',
-                            border: '#E8DDE1'
+                            bg: '#FFFBE8',
+                            card: '#FFFDF4',
+                            text: '#514A20',
+                            muted: '#898052',
+                            accent: '#788B3F',
+                            accentHover: '#627532',
+                            green: '#A8B66A',
+                            yellow: '#E6CF68',
+                            border: '#E9E1B6'
                         }
                     },
                     height: {
@@ -44,8 +44,8 @@
     </script>
     <style>
         body {
-            background-color: #F4F1EA;
-            color: #35232C;
+            background-color: #FFF9DF;
+            color: #514A20;
             -webkit-tap-highlight-color: transparent;
         }
         
@@ -79,27 +79,27 @@
             touch-action: none;
         }
 
-        body { background-color: #F7F3F0; color: #35232C; }
+        body { background-color: #FFFBE8; color: #514A20; }
         .history-sort-button, .sort-text-button {
-            border: 1px solid #E8DDE1; background: #FFFCFA; color: #8C7D83;
+            border: 1px solid #E9E1B6; background: #FFFDF4; color: #898052;
             border-radius: 12px; padding: 8px 13px; font-size: 12px; transition: .15s;
         }
         .history-sort-button.active, .sort-text-button.active {
-            background: #713449; border-color: #713449; color: #fff;
+            background: #788B3F; border-color: #788B3F; color: #fff;
         }
         .library-nav-item {
-            padding: 11px 12px; border-radius: 12px; color: #6E6066; font-size: 13px;
+            padding: 11px 12px; border-radius: 12px; color: #71683D; font-size: 13px;
         }
-        .library-nav-item.active { background: #F7F0F2; color: #713449; font-weight: 500; }
+        .library-nav-item.active { background: #F2EFCF; color: #788B3F; font-weight: 500; }
         .playlist-row {
             display:flex; align-items:center; gap:8px; width:100%; text-align:left;
-            padding:10px 11px; border-radius:12px; color:#6E6066; font-size:13px; cursor:grab;
+            padding:10px 11px; border-radius:12px; color:#71683D; font-size:13px; cursor:grab;
         }
-        .playlist-row.active { background:#F7F0F2; color:#713449; font-weight:500; }
+        .playlist-row.active { background:#F2EFCF; color:#788B3F; font-weight:500; }
         .playlist-row.dragging { opacity:.4; }
         .song-row { display:flex; align-items:center; gap:12px; padding:13px 2px; }
-        .song-open { color:#713449; }
-        .song-action { border:1px solid #E8DDE1; border-radius:9px; padding:6px 9px; font-size:11px; color:#713449; }
+        .song-open { color:#788B3F; }
+        .song-action { border:1px solid #E9E1B6; border-radius:9px; padding:6px 9px; font-size:11px; color:#788B3F; }
         .modal-visible { display:flex !important; }
         @media (min-width:640px) {
             #song-library-view .playlist-row { padding:11px 12px; }
@@ -124,33 +124,33 @@
                     <span class="w-2 h-2 rounded-full bg-earth-green"></span>
                     Personal tracker
                 </div>
-                <button type="button" onclick="openSongLibrary()" aria-label="Song List" class="w-11 h-11 rounded-full border border-earth-border bg-earth-card flex items-center justify-center text-earth-accent hover:bg-[#F7F0F2] transition-colors">
+                <button type="button" onclick="openSongLibrary()" aria-label="Song List" class="w-11 h-11 rounded-full border border-earth-border bg-earth-card flex items-center justify-center text-earth-accent hover:bg-[#F2EFCF] transition-colors">
                     <i data-lucide="music-2" class="w-5 h-5"></i>
                 </button>
             </header>
 
             <main class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-5 lg:gap-7 pb-10">
-                <section class="rounded-[2rem] bg-earth-accent text-white p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-accent/15">
+                <section class="rounded-[2rem] bg-earth-yellow text-earth-text p-6 sm:p-8 lg:p-10 relative overflow-hidden shadow-xl shadow-earth-yellow/25 border border-[#E9D978]">
                     <div class="relative z-10">
                         <div class="flex items-center justify-between gap-3">
-                            <span class="text-[11px] tracking-[0.2em] uppercase text-white/70 font-medium">Karaoke spending</span>
-                            <div class="flex rounded-full bg-white/10 p-1 text-[11px]">
-                                <button id="year-summary-tab" onclick="setSummaryMode('year')" class="rounded-full px-3 py-1.5 bg-white text-earth-accent font-medium">Year</button>
-                                <button id="month-summary-tab" onclick="setSummaryMode('month')" class="rounded-full px-3 py-1.5 text-white/80">Month</button>
+                            <span class="text-[11px] tracking-[0.2em] uppercase text-earth-text/70 font-medium">Karaoke spending</span>
+                            <div class="flex rounded-full bg-white/45 p-1 text-[11px]">
+                                <button id="year-summary-tab" onclick="setSummaryMode('year')" class="rounded-full px-3 py-1.5 bg-white text-earth-text font-medium shadow-sm">Year</button>
+                                <button id="month-summary-tab" onclick="setSummaryMode('month')" class="rounded-full px-3 py-1.5 text-earth-text/75">Month</button>
                             </div>
                         </div>
-                        <p id="summary-caption" class="text-sm text-white/75 mt-5 mb-1">คาราโอเกะปี 2026 (ส่วนของคุณ)</p>
+                        <p id="summary-caption" class="text-sm text-earth-text/75 mt-5 mb-1">คาราโอเกะปี 2026 (ส่วนของคุณ)</p>
                         <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-medium text-white/80">฿</span>
+                            <span class="text-2xl font-medium text-earth-text/80">฿</span>
                             <h2 class="text-4xl sm:text-5xl font-semibold tracking-tight" id="yearly-total">0</h2>
                         </div>
                         <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                            <div class="inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/15 px-3 py-2 text-sm text-white">
-                                <button id="summary-prev" onclick="shiftSummary(-1)" aria-label="ก่อนหน้า" class="px-1 text-white/80 hover:text-white">‹</button>
+                            <div class="inline-flex items-center gap-2 rounded-full bg-white/45 border border-white/50 px-3 py-2 text-sm text-earth-text">
+                                <button id="summary-prev" onclick="shiftSummary(-1)" aria-label="ก่อนหน้า" class="px-1 text-earth-text/75 hover:text-earth-text">‹</button>
                                 <span id="current-year-display">ปี 2026</span>
-                                <button id="summary-next" onclick="shiftSummary(1)" aria-label="ถัดไป" class="px-1 text-white/80 hover:text-white">›</button>
+                                <button id="summary-next" onclick="shiftSummary(1)" aria-label="ถัดไป" class="px-1 text-earth-text/75 hover:text-earth-text">›</button>
                             </div>
-                            <input id="summary-month-picker" type="month" class="hidden rounded-xl border border-white/25 bg-white/95 text-earth-text px-3 py-2 text-sm focus:outline-none" />
+                            <input id="summary-month-picker" type="month" class="hidden rounded-xl border border-white/60 bg-white/95 text-earth-text px-3 py-2 text-sm focus:outline-none" />
                         </div>
                     </div>
                 </section>
@@ -177,7 +177,7 @@
                             <p class="text-sm text-earth-muted mt-1">ทุกครั้งที่ออกไปร้อง มีเรื่องราวและค่าใช้จ่ายให้จดจำ</p>
                         </div>
                         <div class="flex items-center gap-2 self-start sm:self-auto">
-                            <span class="text-xs text-earth-muted bg-[#F7F0F2] border border-earth-border px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
+                            <span class="text-xs text-earth-muted bg-[#F2EFCF] border border-earth-border px-3 py-2 rounded-xl" id="total-sessions-count">0 รายการ</span>
                             <button onclick="exportToExcel()" class="text-xs bg-earth-green/10 text-earth-green hover:bg-earth-green/20 px-3 py-2 rounded-xl flex items-center gap-2 transition-colors border border-earth-green/20 font-medium">
                                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export Excel
                             </button>
@@ -200,7 +200,7 @@
 
     <div id="entry-modal" class="fixed inset-0 z-50 hidden flex-col justify-end sm:justify-center sm:items-center sm:p-4">
         <div class="absolute inset-0 bg-earth-text/60 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative w-full max-w-xl mx-auto bg-[#FBF8F6] rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90dvh] overflow-hidden" id="modal-content">
+        <div class="relative w-full max-w-xl mx-auto bg-[#FFFBEA] rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl flex flex-col max-h-[90dvh] overflow-hidden" id="modal-content">
             <div class="w-full flex justify-center pt-4 pb-2 flex-none cursor-pointer sm:hidden" onclick="closeModal()">
                 <div class="w-12 h-1.5 bg-earth-border rounded-full"></div>
             </div>
@@ -242,7 +242,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="ฉันจ่าย" class="peer sr-only" checked onchange="toggleFriendNameInput()">
-                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-[#F7F0F2] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
+                                <div class="text-center text-sm bg-earth-card border border-earth-border rounded-xl py-3.5 peer-checked:bg-[#F2EFCF] peer-checked:border-earth-accent peer-checked:text-earth-accent transition-colors">ฉันเอง 🙋🏻‍♂️</div>
                             </label>
                             <label class="cursor-pointer">
                                 <input type="radio" name="payer" value="เพื่อนจ่าย" class="peer sr-only" onchange="toggleFriendNameInput()">
@@ -264,16 +264,16 @@
                                 <span>ค่าใช้จ่ายรวม (บาท)</span>
                                 <span class="text-[10px] text-earth-muted font-normal">*แก้ไขได้ถ้ามีค่าอาหาร</span>
                             </label>
-                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#F7F3F0] border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
+                            <input type="number" id="entry-total-cost" min="0" required placeholder="0" oninput="calculateShare()" class="w-full bg-[#FFFBE8] border border-earth-border rounded-xl px-4 py-3 text-xl font-medium text-earth-text focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-earth-accent mb-2 flex justify-between"><span>ส่วนที่ฉันต้องจ่าย (บาท)</span></label>
-                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-[#F7F0F2] border border-earth-accent/25 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
+                            <input type="number" id="entry-my-share" min="0" required placeholder="0" class="w-full bg-[#F2EFCF] border border-earth-accent/25 rounded-xl px-4 py-3 text-xl font-medium text-earth-accent focus:outline-none focus:border-earth-accent focus:ring-2 focus:ring-earth-accent/15 text-right transition-colors">
                         </div>
                     </div>
                     <div class="h-2"></div>
                 </div>
-                <div class="px-6 sm:px-8 py-4 bg-[#FBF8F6] border-t border-earth-border flex gap-3 flex-none pb-7 sm:pb-5">
+                <div class="px-6 sm:px-8 py-4 bg-[#FFFBEA] border-t border-earth-border flex gap-3 flex-none pb-7 sm:pb-5">
                     <button type="button" id="btn-delete" onclick="deleteCurrentEntry()" class="hidden flex-none bg-[#FBE9E8] text-[#B94A48] border border-[#B94A48]/20 hover:bg-[#F6DAD8] px-4 rounded-xl font-medium transition-colors active:scale-95">
                         <i data-lucide="trash-2" class="w-5 h-5"></i>
                     </button>
@@ -303,7 +303,7 @@
                 <aside class="rounded-3xl border border-earth-border bg-earth-card p-4 h-fit">
                     <div class="flex items-center justify-between mb-3">
                         <h2 class="font-semibold text-earth-text">คลังเพลง</h2>
-                        <button onclick="openPlaylistForm()" class="w-8 h-8 rounded-full bg-[#F7F0F2] text-earth-accent flex items-center justify-center" title="สร้าง Playlist"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        <button onclick="openPlaylistForm()" class="w-8 h-8 rounded-full bg-[#F2EFCF] text-earth-accent flex items-center justify-center" title="สร้าง Playlist"><i data-lucide="plus" class="w-4 h-4"></i></button>
                     </div>
                     <button id="all-songs-nav" onclick="showAllSongs()" class="library-nav-item active w-full text-left">♫ เพลงทั้งหมด <span id="all-songs-count" class="float-right">0</span></button>
                     <div class="border-t border-earth-border my-4"></div>
@@ -329,7 +329,7 @@
                         </div>
                         <div class="relative mb-4">
                             <i data-lucide="search" class="w-4 h-4 text-earth-muted absolute left-3 top-1/2 -translate-y-1/2"></i>
-                            <input id="song-search" oninput="renderSongLibrary()" type="search" placeholder="ค้นหาชื่อเพลงหรือศิลปิน..." class="w-full rounded-xl border border-earth-border bg-[#F7F3F0] pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-accent">
+                            <input id="song-search" oninput="renderSongLibrary()" type="search" placeholder="ค้นหาชื่อเพลงหรือศิลปิน..." class="w-full rounded-xl border border-earth-border bg-[#FFFBE8] pl-10 pr-4 py-3 text-sm text-earth-text focus:outline-none focus:border-earth-accent">
                         </div>
                         <div id="playlist-actions" class="hidden items-center justify-between gap-2 mb-4">
                             <span class="text-xs text-earth-muted" id="playlist-song-count"></span>
@@ -351,15 +351,15 @@
 
     <div id="song-form-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closeSongForm()"></div>
-        <div class="relative w-full max-w-lg bg-[#FFFCFA] rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto">
+        <div class="relative w-full max-w-lg bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl max-h-[90dvh] overflow-y-auto">
             <div class="flex justify-between items-center mb-5">
                 <div><p class="text-[10px] tracking-[0.2em] uppercase text-earth-accent font-semibold">Add to library</p><h3 class="text-xl font-semibold text-earth-text">เพิ่มเพลง</h3></div>
                 <button onclick="closeSongForm()" class="w-9 h-9 rounded-full border border-earth-border text-earth-muted"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <label class="block text-xs text-earth-muted mb-2">วาง URL เพลง (ไม่บังคับ)</label>
             <div class="flex gap-2 mb-2">
-                <input id="song-url" type="url" placeholder="YouTube / Spotify / Apple Music" class="min-w-0 flex-1 rounded-xl border border-earth-border bg-[#F7F3F0] px-3 py-3 text-sm">
-                <button id="fetch-song-metadata" onclick="fetchSongMetadata()" class="rounded-xl bg-[#F7F0F2] text-earth-accent px-3 text-xs font-medium">ดึงข้อมูล</button>
+                <input id="song-url" type="url" placeholder="YouTube / Spotify / Apple Music" class="min-w-0 flex-1 rounded-xl border border-earth-border bg-[#FFFBE8] px-3 py-3 text-sm">
+                <button id="fetch-song-metadata" onclick="fetchSongMetadata()" class="rounded-xl bg-[#F2EFCF] text-earth-accent px-3 text-xs font-medium">ดึงข้อมูล</button>
             </div>
             <p id="metadata-status" class="text-[11px] text-earth-muted mb-4">ระบบจะพยายามอ่านชื่อเพลงและศิลปิน หากไม่สำเร็จกรอกเองได้</p>
             <label class="block text-xs text-earth-muted mb-2">ชื่อเพลง</label>
@@ -375,7 +375,7 @@
 
     <div id="playlist-form-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closePlaylistForm()"></div>
-        <div class="relative w-full max-w-md bg-[#FFFCFA] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
+        <div class="relative w-full max-w-md bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl">
             <div class="flex justify-between items-center mb-4"><h3 id="playlist-form-title" class="text-xl font-semibold text-earth-text">สร้าง Playlist</h3><button onclick="closePlaylistForm()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
             <input id="playlist-name" type="text" maxlength="50" placeholder="ชื่อ Playlist" class="w-full rounded-xl border border-earth-border px-4 py-3 mb-4">
             <div class="flex gap-2"><button onclick="closePlaylistForm()" class="flex-1 rounded-xl border border-earth-border py-3">ยกเลิก</button><button onclick="savePlaylist()" class="flex-1 rounded-xl bg-earth-accent text-white py-3">บันทึก</button></div>
@@ -384,7 +384,7 @@
 
     <div id="add-songs-modal" class="hidden fixed inset-0 z-[70] items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="absolute inset-0 bg-earth-text/50 backdrop-blur-sm" onclick="closeAddSongsModal()"></div>
-        <div class="relative w-full max-w-xl bg-[#FFFCFA] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90dvh] flex flex-col">
+        <div class="relative w-full max-w-xl bg-[#FFFDF4] rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl max-h-[90dvh] flex flex-col">
             <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-semibold text-earth-text">เลือกเพลงจากคลัง</h3><button onclick="closeAddSongsModal()" class="text-earth-muted"><i data-lucide="x" class="w-5 h-5"></i></button></div>
             <input id="add-songs-search" oninput="renderAddSongsChoices()" placeholder="ค้นหาเพลงหรือศิลปิน..." class="w-full rounded-xl border border-earth-border px-3 py-3 text-sm mb-3">
             <div id="add-songs-choices" class="overflow-y-auto flex-1 divide-y divide-earth-border"></div>
@@ -871,7 +871,7 @@
                 const card = document.createElement("div");
                 card.className = "bg-earth-card p-4 rounded-2xl flex items-center gap-4 cursor-pointer hover:bg-gray-50 border border-earth-border shadow-sm transition-colors active:scale-[0.98]";
                 card.onclick = () => openModal(session.id);
-                card.innerHTML = '<div class="bg-[#F7F0F2] rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border border-earth-border/50 flex-none">' +
+                card.innerHTML = '<div class="bg-[#F2EFCF] rounded-xl p-3 flex flex-col items-center justify-center w-14 h-14 border border-earth-border/50 flex-none">' +
                     '<span class="text-[11px] text-earth-muted leading-tight">' + dateObj.toLocaleDateString("th-TH",{month:"short"}) + '</span>' +
                     '<span class="text-lg font-medium leading-none text-earth-text mt-0.5">' + dateObj.getDate() + '</span></div>' +
                     '<div class="flex-1 min-w-0"><div class="flex justify-between items-start mb-1"><h4 class="font-medium text-earth-text truncate pr-2">ร้อง ' + (session.hours || "?") + ' ชม. (' + session.people + ' คน)</h4>' +
@@ -1040,7 +1040,7 @@
                 row.className = "song-row";
                 const source = song.url ? '<a class="song-open text-xs" href="' + escapeSongAttribute(song.url) + '" target="_blank" rel="noopener noreferrer">เปิดต้นทาง ↗</a>' : "";
                 const remove = isPlaylist ? '<button class="song-action" data-remove-song="' + song.id + '">นำออก</button>' : '<button class="song-action" data-delete-song="' + song.id + '">ลบ</button>';
-                row.innerHTML = '<div class="w-10 h-10 rounded-xl bg-[#F7F0F2] text-earth-accent flex items-center justify-center flex-none">♫</div><div class="min-w-0 flex-1"><p class="text-sm font-medium text-earth-text truncate">' + escapeSongText(song.title) + '</p><p class="text-xs text-earth-muted truncate">' + escapeSongText(song.artist) + '</p><div class="mt-1">' + source + '</div></div><div class="flex items-center gap-1">' + remove + '</div>';
+                row.innerHTML = '<div class="w-10 h-10 rounded-xl bg-[#F2EFCF] text-earth-accent flex items-center justify-center flex-none">♫</div><div class="min-w-0 flex-1"><p class="text-sm font-medium text-earth-text truncate">' + escapeSongText(song.title) + '</p><p class="text-xs text-earth-muted truncate">' + escapeSongText(song.artist) + '</p><div class="mt-1">' + source + '</div></div><div class="flex items-center gap-1">' + remove + '</div>';
                 list.appendChild(row);
             });
             list.querySelectorAll("[data-remove-song]").forEach(button => button.addEventListener("click", () => removeSongFromPlaylist(button.dataset.removeSong)));
@@ -1230,7 +1230,7 @@
             available.forEach(song => {
                 const label = document.createElement("label");
                 label.className = "flex items-center gap-3 py-3 cursor-pointer";
-                label.innerHTML = '<input type="checkbox" class="w-4 h-4 accent-[#713449]" value="' + song.id + '"' + (selectedSongIds.has(song.id) ? " checked" : "") + '><span class="min-w-0"><span class="block text-sm text-earth-text">' + escapeSongText(song.title) + '</span><span class="block text-xs text-earth-muted">' + escapeSongText(song.artist) + '</span></span>';
+                label.innerHTML = '<input type="checkbox" class="w-4 h-4 accent-[#788B3F]" value="' + song.id + '"' + (selectedSongIds.has(song.id) ? " checked" : "") + '><span class="min-w-0"><span class="block text-sm text-earth-text">' + escapeSongText(song.title) + '</span><span class="block text-xs text-earth-muted">' + escapeSongText(song.artist) + '</span></span>';
                 label.querySelector("input").addEventListener("change", event => {
                     if (event.target.checked) selectedSongIds.add(song.id);
                     else selectedSongIds.delete(song.id);
